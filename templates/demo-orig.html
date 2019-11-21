@@ -1,0 +1,372 @@
+
+<head>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment"> </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<script src="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/src/js/bootstrap-datetimepicker.js"></script>
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"/>
+
+<link href="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/build/css/bootstrap-datetimepicker.css" rel="stylesheet"/>
+
+
+<!-- <script src='static/Chart.min.js'></script>
+ -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+//connect to the socket server.
+var socket = io.connect('http://' + document.domain + ':' + location.port + '/test');
+console.log(socket)
+var numdata = [];
+var numlables = [];
+var msg =[];
+var numbers_string =[];
+var lables_string= [];
+//receive details from server
+socket.on('my_msg', function(msg1){
+  // console.log(msg1.k)
+  alert(msg1.k);
+  
+});
+
+socket.on('newnumber', function(msg) {
+ // console.log("Received numbers" + msg.data1);
+  //maintain a list of ten numbers
+ alert(msg.display)
+  //numdata.push(msg.data1).toString();  
+  for(var i=0; i <=msg.data1.length; i++)
+  {
+    numdata.push([msg.data1[i]]) 
+    // if (numdata.length >= 20){
+    //       numdata.shift()
+    //     }   
+    
+  } 
+  for(var i=0; i <(msg.data2.length); i++)
+  {
+    console.log(numlables)
+    numlables.push(msg.data2[i]);
+  //   if (numlables.length >= 20){
+  //     numlables.shift()
+  // }    
+}       
+  
+  console.log(numdata)
+  console.log(numlables)
+  for (var i = 0; i < numdata.length; i++){
+            numbers_string = numbers_string + '<p>' + numdata[i] + '</p>';
+        }
+  for (var i = 0; i < (numlables.length); i++){
+      lables_string = lables_string + '<p>' + numlables[i] + '</p>';
+  }
+  $('#log').html(numbers_string);
+  $('#log1').html(lables_string);
+  
+
+});
+
+});
+</script>
+
+<!-- <script type="text/javascript">
+      let socket4 = new WebSocket("ws://127.0.0.1:5000/");
+
+      socket4.onopen = function(e) {
+        alert("[open] Connection established");
+        alert("Sending to server");
+        socket4.send("My name is Rakesh");
+      };
+
+      socket4.onmessage = function(event) {
+        alert(`[message] Data received from server: ${event.data}`);
+      };
+
+      socket4.onclose = function(event) {
+        if (event.wasClean) {
+          alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+        } else {
+          // e.g. server process killed or network down
+          // event.code is usually 1006 in this case
+          alert('[close] Connection died');
+        }
+      };
+
+      socket4.onerror = function(error) {
+        alert(`[error] ${error.message}`);
+      };
+    </script>
+
+ -->
+ <!-- <script type="text/javascript">
+      var socket = io.connect('http://' + document.domain + ':' + location.port);
+      socket.on( 'connect', function() {
+        socket.emit( 'my event', {
+          data: 'User Connected'
+        } )
+        var form = $( 'form' ).on( 'submit', function( e ) {
+          e.preventDefault()
+          let user_name = $( 'input.username' ).val()
+          let user_input = $( 'input.message' ).val()
+          socket.emit( 'my event', {
+            user_name : user_name,
+            message : user_input
+          } )
+          $( 'input.message' ).val( '' ).focus()
+        } )
+      } )
+      socket.on( 'my response', function( msg ) {
+        console.log( msg )
+        if( typeof msg.user_name !== 'undefined' ) {
+          $( 'h3' ).remove()
+          $( 'div.message_holder' ).append( '<div><b style="color: #000">'+msg.user_name+'</b> '+msg.message+'</div>' )
+        }
+      })
+    </script> -->
+</head>
+
+<body>
+  <div class="container card card-body bg-light">
+      <h5 class="card-title text-center text-dark" style="font-size: 30px;">Demo Project</h5>
+  <div class="row">   
+ <div class="col-6">
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-3">
+        <p>Date</p>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class='input-group date' id='datetimepicker1'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker1').datetimepicker();
+            });
+            </script>
+            <div class="col-md-6"> 
+          <span > <img src= "{{url_for('static',filename='download.jpeg')}}" alt="Smiley face" height="200" width="200"></span>
+            </div>
+          <div class="row">
+            
+              <div id="log1" class="col-md-2">
+                </div>
+          <div id="log" class="col-md-8 ">
+            </div>
+            
+            </div>
+       
+        <!-- <h3 style='color: #ccc;font-size: 30px;'>No message yet..</h3>
+    <div class="message_holder"></div>
+
+    <form action="" method="POST">
+      <input type="text" class="username" placeholder="User Name"/>
+      <input type="text" class="message" placeholder="Messages"/>
+      <input type="submit"/>
+    </form>
+        </div> -->
+       
+        </div>
+    </div>
+    <div class="col-6">
+      <div class="row">
+        <div class="col-md-9 card card-body bg-light border-dark text-center">
+          <h1>PIE chart</h1>
+          <canvas id="pie-chart" width="60" height="40"></canvas>
+        </div>
+        
+        <div class="col-md-9 card card-body bg-light border-dark text-center">
+            <h1>BAR chart</h1>
+          <canvas id="bar-chart" width="60" height="40"></canvas>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+    <script>
+
+var ctx = document.getElementById('bar-chart').getContext("2d");
+
+var LabelResult = {{lables}}
+var DataResult = {{data}}
+var maledata = []
+var femaledata= []
+
+for (var i=0; i< DataResult.length; i++){
+  maledata.push(DataResult[i][0])
+  femaledata.push(DataResult[i][1])
+}
+ 
+
+console.log(LabelResult)
+console.log(DataResult)
+console.log(maledata)
+console.log(femaledata)
+ 
+var chart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+labels: LabelResult,
+legend:["Male", "Female"],
+      
+      datasets: [{
+          legend:"Male",
+          data: maledata,
+          backgroundColor: "blue",
+          
+      },{
+          legend: "Female",
+          data: femaledata,
+          backgroundColor: "red",
+          
+      }
+
+      ]
+  },
+  options: {
+    animation: false,
+    responsive: true,
+    barValueSpacing: 20,
+    legend: {
+            display: true
+         },
+         tooltips: {
+            enabled: false
+         },
+    scales: {
+         xAxes: [{
+      	scaleLabel: {
+          display: true,
+          labelString: 'Time'
+      },
+       ticks: { 
+           	beginAtZero: true,
+           	min: 0,
+           	max: 24,
+           	stepSize: 1
+           },
+      }],
+      yAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'Number of male and Female Employes'
+        },
+        ticks: { 
+            beginAtZero: true,
+            min: 0,
+            max: 12,
+            stepSize: 2
+          }
+      }]
+    }
+  }
+});
+
+
+
+var ptx = document.getElementById('pie-chart').getContext("2d");
+
+var LabelResult = {{lables}};
+var DataResult = {{data}};
+var maledata = []
+var femaledata= []
+for (var i=0; i< DataResult.length; i++){
+  maledata.push(DataResult[i][0])
+  femaledata.push(DataResult[i][1])
+}
+
+console.log(LabelResult)
+console.log(DataResult)
+console.log(maledata)
+console.log(femaledata)
+
+
+var maleres = 0;
+  for (var i = 0; i < maledata.length; i++)
+      maleres += maledata[i];
+    console.log(maleres);
+
+var femres = 0;
+     for (var i = 0; i < femaledata.length; i++)
+      femres += femaledata[i];
+    console.log(femres);
+
+var chart = new Chart(ptx, {
+  type: 'doughnut',
+  data: {
+labels: ["Male", "Female"],
+      
+      datasets: [{
+        
+          data: [ maleres,femres],
+          backgroundColor: ["#0074D9", "#FF4136"]
+         // backgroundColor: [ "blue","red" ]
+          
+      }
+          
+      
+
+      ]
+  },
+  options: {
+    animation: false,
+    responsive: true,
+   
+    legend: {
+            display: true
+         },
+         tooltips: {
+            enabled: false
+         },
+    // scales: {
+    //      xAxes: [{
+    //     scaleLabel: {
+    //       display: true,
+    //       labelString: 'Time'
+    //   },
+    //    ticks: { 
+    //         beginAtZero: true,
+    //         min: 0,
+    //         max: 24,
+    //         stepSize: 1
+    //        },
+    //   }],
+    //   yAxes: [{
+    //     scaleLabel: {
+    //       display: true,
+    //       labelString: 'Number of male and Female Employes'
+    //     },
+    //     // ticks: { 
+    //     //     beginAtZero: true,
+    //     //     min: -10000,
+    //     //     max: 10000,
+    //     //     stepSize: 4000
+    //     //   }
+    //   }]
+    }
+  
+});
+
+    </script>
+  
+   
+</body>
+

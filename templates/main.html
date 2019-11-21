@@ -1,0 +1,279 @@
+<head>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment"> </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<script src="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/src/js/bootstrap-datetimepicker.js"></script>
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"/>
+
+<link href="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/build/css/bootstrap-datetimepicker.css" rel="stylesheet"/>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+  
+</script>
+<style>
+  p {
+    margin: 7px 0 10px;
+}
+</style>
+
+</head>
+
+<body>
+  <div class="container card card-body bg-light">
+      <h5 class="card-title text-center text-dark" style="font-size: 30px;">Vision Based Crowd Analytics</h5>
+  <div class="row">   
+ <div class="col-6">
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-3 text-right text-dark">
+        <p>Date</p>
+        </div>
+        <!-- <div class="col-md-6">
+            <div class="form-group">
+                <div class='input-group date' id='datetimepicker1'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker1').datetimepicker();
+            });
+            </script> -->
+            <div class="col-md-12"> 
+          <span > 
+            <img src= "{{ url_for('video_feed') }}"  alt="Smiley face" height="500" width="500">
+          
+          </span>
+            </div>
+      
+            </div>
+    </div>
+    <div class="col-6">
+      <div class="row">
+        <div class="col-md-9 card card-body bg-light border-dark text-center">
+          
+          <canvas id="pie-chart" width="395" height="265"></canvas>
+        </div>
+        
+        <div class="col-md-9 card card-body bg-light border-dark text-center">
+          
+          <canvas id="bar-chart" width="395" height="265"></canvas>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    $(document).ready(function(){
+//connect to the socket server.
+var socket = io.connect('http://' + document.domain + ':' + location.port + '/test');
+console.log(socket)
+var maledata = [];
+var femaledata = [];
+var totalmale = 0;
+var totalfemale = 0;
+var lables = [];
+socket.on('newnumber', function(msg){
+  console.log(msg)
+  console.log(msg.display)
+  
+  // alert(msg.display );  
+});
+socket.on('newframe', function(msg1){
+  console.log(msg1)
+  console.log(msg1.display)
+  
+  // alert(msg1.totalMale + "," + msg1.totalFemale + "HI" + ","+ msg1.hourly_count_dict_female + ","+ msg1.hourly_count_dict_male)
+  
+});
+
+socket.on('newmale', function(male){
+  console.log(male)
+  // console.log(male.hourly_count_dict_male)
+  for (var key in male.hourly_count_dict_male){
+    // console.log( key, male.hourly_count_dict_male[key] );
+    maledata.push(male.hourly_count_dict_male[key])
+    lables.push(key)
+    if (maledata.length >= 24){
+          maledata.shift()
+        }  
+  }
+  console.log(maledata)
+  totalmale = male.totalMale;
+  console.log(chartb.data.datasets.data)
+  chartb.data.datasets[0].data=maledata
+  chartp.data.datasets.data[0]=totalmale
+  chartb.update();
+  chartp.update();
+  // updatechart();
+  // alert(male.display );  
+});
+socket.on('newfemale', function(female){
+  console.log(female)
+  // console.log(female.hourly_count_dict_female)
+  for (var key in female.hourly_count_dict_female){
+    // console.log( key, male.hourly_count_dict_male[key] );
+    femaledata.push(female.hourly_count_dict_female[key]) 
+    lables.push(key)
+    if (femaledata.length >= 24){
+          femaledata.shift()
+        }  
+  }
+ 
+  console.log(femaledata)
+  totalfemale = female.totalFemale
+  console.log(chartb.data.datasets.data)
+  chartb.data.datasets[1].data=femaledata
+  chartp.data.datasets.data[1]=totalfemale
+  chartb.update();
+  chartp.update();
+  // updatechart();
+  // alert(female.display )
+});
+
+
+    var ctx = document.getElementById('bar-chart').getContext("2d");
+    
+    // var male = {{ hourly_count_dict_male }}
+    // var female = {{ hourly_count_dict_female }}
+    // console.log(male)
+    // console.log(female)
+    // var maledata = []
+    // var femaledata =[]
+    // var lables= []
+    // for (var key in male){
+    //   // console.log( key, male[key] );
+    //   maledata.push(male[key])
+    //   lables.push(key)
+    // }
+    // for (var key in female){
+    //   // console.log( key, female[key] );
+    //   femaledata.push(female[key])
+    // }
+
+    // console.log(maledata)
+    // console.log(femaledata)
+     
+    var chartb = new Chart(ctx, {
+  type: 'bar',
+  data: {
+labels: lables,
+legend:["Male", "Female"],
+      
+      datasets: [{
+          legend:"Male",
+          data: maledata,
+          backgroundColor: "blue",
+          
+      },{
+          legend: "Female",
+          data: femaledata,
+          backgroundColor: "red",
+          
+      }
+
+      ]
+  },
+  options: {
+    animation: false,
+    responsive: true,
+    barValueSpacing: 20,
+    legend: {
+            display: true
+         },
+         tooltips: {
+            enabled: false
+         },
+    scales: {
+         xAxes: [{
+      	scaleLabel: {
+          display: true,
+          labelString: 'Time'
+      },
+       ticks: { 
+           	beginAtZero: true,
+           	min: 0,
+           	max: 24,
+           	stepSize: 1
+           },
+      }],
+      yAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'Number of male and Female Employes'
+        },
+        ticks: { 
+            beginAtZero: true,
+            min: 0,
+            max: 12,
+            stepSize: 2
+          }
+      }]
+    }
+  }
+});
+
+    
+    
+    var ptx = document.getElementById('pie-chart').getContext("2d");
+    
+    // var totalmale = {{totalMale}}
+    // var totalfemale = {{totalFemale}}
+    // console.log(totalmale)
+    // console.log(totalfemale)
+    
+    
+    var chartp = new Chart(ptx, {
+      type: 'doughnut',
+      data: {
+    labels: ["Male", "Female"],
+          
+          datasets: [{
+            
+              data: [ totalmale,totalfemale],
+              backgroundColor: ["#0074D9", "#FF4136"]
+             // backgroundColor: [ "blue","red" ]
+              
+          }
+              
+          
+    
+          ]
+      },
+      options: {
+        animation: false,
+        responsive: true,
+       
+        legend: {
+                display: true
+             },
+             tooltips: {
+                enabled: false
+             },
+       
+        }
+      
+    });
+
+  });
+       </script>   
+  
+   
+</body>

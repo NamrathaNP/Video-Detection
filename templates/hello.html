@@ -1,0 +1,240 @@
+
+<head>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment"> </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"
+    />
+<!-- <script src='static/Chart.min.js'></script>
+ -->
+ <style>
+table {
+  border-collapse: collapse;
+
+}
+
+/*table{
+  border: 1px solid black;
+}*/
+td{
+  height: 40px;
+  width:40px;
+  border: 1px solid black;
+  border-collapse: collapse;
+  text-align: center;
+  vertical-align: center;
+}
+
+.defect{
+  border: none;
+  height: 40px;
+  width: 150px;
+  font-weight: 600;
+  text-align: right;
+  vertical-align: center;
+  padding: 10px;
+}
+.sec{
+  border: none;
+  height: 40px;
+  width: 40px;
+  font-weight: 600;
+  text-align: center;
+  vertical-align: center;
+  
+}
+.greyBg {
+  background-color:#66CC00 ;
+  -webkit-transition: background-color 2s ease-out;
+  transition: background-color 2s ease-out;
+}
+</style>
+</head>
+
+<body>
+   <table id="myTable">
+      <tr>
+        <td class="defect"></td>
+      <script>
+      for(var j=5; j<=60; j+=5)
+      {
+        document.write("<td class='sec'>"+j+"</td>");
+      }
+      </script>
+      
+  </tr>
+    <tr id="normal" >
+        <td class="defect">Normal</td>
+         <td ></td> <td ></td> <td ></td> <td ></td> <td ></td> <td ></td>
+          <td ></td> <td ></td> <td ></td> <td ></td> <td ></td> <td ></td>
+      </tr>
+      <tr id="pitting">
+        <td class="defect">Pitting</td>
+          <td ></td> <td ></td> <td ></td> <td ></td> <td ></td> <td ></td>
+          <td ></td> <td ></td> <td ></td> <td ></td> <td ></td> <td ></td>
+      </tr>
+       <tr id="tooth">
+        <td class="defect">Tooth Fracture</td>
+         <td ></td> <td ></td> <td ></td> <td ></td> <td ></td> <td ></td>
+          <td ></td> <td ></td> <td ></td> <td ></td> <td ></td> <td ></td>
+      </tr>
+       <tr id="wear">
+        <td class="defect">Wear</td>
+          <td ></td> <td ></td> <td ></td> <td ></td> <td ></td> <td ></td>
+          <td ></td> <td ></td> <td ></td> <td ></td> <td ></td> <td ></td>
+      </tr>
+      </table>
+    
+    
+    <div className="col-md-3"><canvas id="line-chart" width="60" height="40"></canvas></div>
+
+   
+    <script>
+
+var ctx = document.getElementById('line-chart').getContext("2d");
+
+
+//var array = [2,-2,3,-4,5,3,-7,2,-4,5,-3,5,3,-2,6,2,4,5,3,-2,-3,-5,-2,4,4]
+var array = {{values}}
+
+
+console.log(array)
+var i=0;
+var count = array.length;
+var counter = 0;
+var LabelResult = [];
+var DataResult = [];
+
+ 
+var chart = new Chart(ctx, {
+  type: 'area',
+  data: {
+labels: LabelResult,
+      
+      datasets: [{
+          fill: false,
+          data: DataResult,
+         
+          
+          borderColor: "#000000",
+          type: 'line',
+          pointRadius: 0.5,
+          lineTension: 0,
+          borderWidth: 2
+      }
+      ]
+  },
+  options: {
+    animation: false,
+    responsive: true,
+    legend: {
+            display: false
+         },
+         tooltips: {
+            enabled: false
+         },
+    scales: {
+         xAxes: [{
+      	scaleLabel: {
+          display: true,
+          labelString: 'Time'
+      },
+       ticks: { 
+           	beginAtZero: true,
+           	min: 0,
+           	max: 100,
+           	stepSize: 1
+           },
+      }],
+      yAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'Noise'
+        },
+        // ticks: { 
+        //     beginAtZero: true,
+        //     min: -10000,
+        //     max: 10000,
+        //     stepSize: 4000
+        //   }
+      }]
+    }
+  }
+});
+var normal = document.getElementById("normal");
+      var pitting = document.getElementById("pitting");
+      var tooth = document.getElementById("tooth");
+      var wear = document.getElementById("wear");
+      console.log(resp);
+       var resp = ["Normal", "Pitting", "Tooth Fracture", "Wear", "Pitting", "Normal", "Pitting", "Tooth Fracture", "Wear", "Pitting", "Normal", "Pitting"];
+       var res =[];
+      console.log(resp);
+     
+        function change(i) {
+        
+      
+        res[i] = resp[i];
+        
+        if (res[i]=="Normal"){
+            
+            $('#normal').find('td').eq(i+1).addClass("greybg");
+            //normal.document.getElementById(i).style.backgroundColor =  "#404040";
+        }
+         if (res[i]=="Pitting"){
+          $('#pitting').find('td').eq(i+1).addClass("greybg");
+           //$("#pitting td:eq(i)").addClass('greyBg');
+           // pitting.document.getElementById(i).style.backgroundColor =  "#404040";
+        }
+         if (res[i]=="Tooth Fracture"){
+          $('#tooth').find('td').eq(i+1).addClass("greybg");
+          // $("#tooth td:eq(i)").addClass('greyBg');
+           // tooth.document.getElementById(i).style.backgroundColor =  "#404040";
+        }
+         if (res[i]=="Wear"){
+          $('#wear').find('td').eq(i+1).addClass("greybg");
+            //$("#wear td:eq(i)").addClass('greyBg');
+           // wear.document.getElementById(i).style.backgroundColor =  "#404040";
+        }
+        
+       
+     }
+       // setInterval(function() {
+       // for (var i=0; i<12; i++)
+       // {
+       //   change(i);
+       // }
+       //  } , 5000);
+ 
+
+
+ setInterval(function() {
+ 	if (count >0){
+ 	DataResult.push(array[counter]);
+    LabelResult.push(counter);
+    counter+=1600
+    count -=1600;
+    if (DataResult.length> 9){
+		DataResult.shift(); 
+		LabelResult.shift();
+	}
+
+
+chart.update();
+
+}
+ // for (var i=0; i<12; i++)
+if(i <=12)
+       {
+         change(i);
+         i++;
+       }
+}, 1000);
+ 
+    </script>
+  
+   
+</body>
+
