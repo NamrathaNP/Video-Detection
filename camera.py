@@ -4,19 +4,23 @@ import cv2
 from utils.centroidtracker import CentroidTracker
 from utils.trackableobject import TrackableObject
 from datetime import datetime
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, emit
 import pandas as pd
 import numpy as np
 import argparse
 import imutils
-import time
-import cv2
+import time as importedtime
+# import cv2
 
 import os
+import eventlet 
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app)
+# socketio = SocketIO(app)
+# eventlet.monkey_patch() 
+socketio = SocketIO(app,async_mode = 'eventlet',  logger=True, engineio_logger=True)
 
 ct = CentroidTracker()
 trackers = []
@@ -28,6 +32,7 @@ now = datetime.now() #video filename
 # init gender parameters 
 MODEL_MEAN_VALUES = (78.4263377603, 87.7689143744, 114.895847746)
 gender_list = ['Male', 'Female']
+gender = None
 totalMale = 0
 totalFemale = 0
 #hourly_count_dict_male = dict((x,0) for x in np.arange(24))
@@ -48,16 +53,17 @@ gender_net = cv2.dnn.readNetFromCaffe(
                         "gender_model/gender_net.caffemodel")
 
 
-
+print("[INFO] starting video stream...")
 class VideoCamera(object):
-    def __init__(self):
+    def __init__(self,cameraid):
         # Using OpenCV to capture from device 0. If you have trouble capturing
         # from a webcam, comment the line below out and use a video file
         # instead.
-        # cam= int(cameraid)
-        self.video = cv2.VideoCapture(0)
         # print(type(cameraid))
-        # print(cameraid)
+        cam= int(cameraid)
+        self.video = cv2.VideoCapture(cam)
+        # print(type(cam))
+        # print(cam)
         #video capture from IP webcam
         #cap = cv2.VideoCapture('rtsp://admin:admin@172.16.0.14')
         # If you decide to use video.mp4, you must have this file in the folder
@@ -68,28 +74,10 @@ class VideoCamera(object):
         self.video.release()
 
     def get_frame(self):
-        global totalMale, totalFemale, hourly_count_dict_male, hourly_count_dict_female
+        global totalMale, totalFemale, hourly_count_dict_male, hourly_count_dict_female, face_net,gender_net, confidence,gender_list, MODEL_MEAN_VALUES,now, gender
         (H, W) = (None, None)
-        writer = None
-        now = datetime.now() #video filename
-        # init gender parameters 
-        MODEL_MEAN_VALUES = (78.4263377603, 87.7689143744, 114.895847746)
-        gender_list = ['Male', 'Female']
-        # totalMale = 0
-        # totalFemale = 0
-        # hourly_count_dict_male = dict((x,0) for x in np.arange(24))
-        # hourly_count_dict_female = dict((x,0) for x in np.arange(24))
-        # face detection confidence threshold
-        confidence = 0.5
-        # load our serialized model from disk
-        
-        face_net = cv2.dnn.readNetFromCaffe(
-                                "face_model/deploy_face.prototxt", 
-                                "face_model/face_net.caffemodel")
 
-        gender_net = cv2.dnn.readNetFromCaffe(
-                                "gender_model/deploy_gender.prototxt", 
-                                "gender_model/gender_net.caffemodel")
+        writer = None
 
         success, frame = self.video.read()
        
@@ -134,7 +122,7 @@ class VideoCamera(object):
                 if(startX<0 or startY<0):
                     break
 
-                face_img = frame[startY:endY, startX:endX].copy()
+                face_img = frame[startY-20:endY+10, startX-20:endX-20].copy()
                 if not face_img.size:
                     # print('breaking from face')
                     break
@@ -147,13 +135,14 @@ class VideoCamera(object):
                 gender_net.setInput(blob2)
                 gender_preds = gender_net.forward()
                 gender = gender_list[gender_preds[0].argmax()]
+                # print(gender)
                 overlay_text = "%s" % (gender)
                 cv2.putText(frame, overlay_text ,(startX,startY), cv2.FONT_HERSHEY_SIMPLEX, 0.7,(255,0,0),1,cv2.LINE_AA)
                 cv2.rectangle(frame, (startX, startY), (endX, endY),(0, 255, 0), 1)
 
         cv2.line(frame, (50, 0), (50, H), (0, 255, 255), 1)
         cv2.line(frame, (350, 0), (350, H), (0, 255, 255), 1)          
-        save_frame = frame.copy()       
+        # save_frame = frame.copy()       
         # update our centroid tracker using the computed set of bounding
         # box rectangles
         objects = ct.update(rects)
@@ -191,7 +180,7 @@ class VideoCamera(object):
                 if (direction < 0 and centroid[0] <=50) or (direction>0 and centroid[0] >=350):
                     now = datetime.now()
                     time = str(now.hour)
-                   
+                    print('inside direction:',gender)
                     if gender is 'Male':
                         totalMale += 1
                         to.counted = True
@@ -200,26 +189,30 @@ class VideoCamera(object):
                         
                         print('Male:\n',hourly_count_dict_male)
                        
-                        (pd.DataFrame.from_dict(data=hourly_count_dict_male, 
-                        orient='index').to_csv('./static/male.csv', header=True))
-                        socketio.sleep(1)
+                        # (pd.DataFrame.from_dict(data=hourly_count_dict_male, 
+                        # orient='index').to_csv('./static/male.csv', header=True))
+                        
+                        
                         socketio.emit('newmale', {'hourly_count_dict_male': hourly_count_dict_male, 'totalMale': totalMale} , namespace='/test')
-
-                        # print("HI")
+                        socketio.sleep(0)
+                       
+                        
 
                     elif gender is 'Female':
                         totalFemale += 1
                         to.counted = True
-                        
+                       
                         hourly_count_dict_female[time]+=1
 
                         print('Female:\n',hourly_count_dict_female)
-                        (pd.DataFrame.from_dict(data=hourly_count_dict_female, 
-                        orient='index').to_csv('./static/female.csv', header=True))
-                        socketio.sleep(1)
+                       
+                        # (pd.DataFrame.from_dict(data=hourly_count_dict_female, 
+                        # orient='index').to_csv('./static/female.csv', header=True))
+                       
+                        
                         socketio.emit('newfemale', {'hourly_count_dict_female': hourly_count_dict_female,'totalFemale':totalFemale} , namespace='/test')
-
-                        # print("HI")
+                        socketio.sleep(0)
+                        
 
             # store the trackable object in our dictionary
             trackableObjects[objectID] = to
@@ -252,54 +245,44 @@ class VideoCamera(object):
         # key = cv2.waitKey(1) & 0xFF
 
         ret, jpeg = cv2.imencode('.jpg', frame)
+
         return jpeg.tobytes()
-        # return '{} {} {}'.format(jpeg.tobytes(), hourly_count_dict_male, hourly_count_dict_female)
 
 
 @app.route('/')
 def index():
-    # totalMale = 6
-    # totalFemale = 7
-    # hourly_count_dict_male = {0: 0, 1: 0, 2: 0, 3: 2, 4: 4, 5: 4, 6: 2, 7: 10, 8: 1, 9: 8, 10: 4, 11: 0, 12: 0, 13: 0, 14: 0, 15: 0, 16: 0, 17: 0, 18: 0, 19: 0, 20: 0, 21: 0, 22: 0, 23: 0}
-    # hourly_count_dict_female = {0: 0, 1: 0, 2: 0, 3: 1, 4: 0, 5: 5, 6: 7, 7: 6, 8: 4, 9: 1, 10: 6, 11: 0, 12: 0, 13: 0, 14: 0, 15: 0, 16: 0, 17: 0, 18: 0, 19: 0, 20: 0, 21: 0, 22: 0, 23: 0}
-    # # print(totalMale)
-    # socketio.emit('newframe', {'hourly_count_dict_male': hourly_count_dict_male, 'hourly_count_dict_female': hourly_count_dict_female,'totalMale':totalMale, 'totalFemale':totalFemale} , namespace='/test')
-
+    
     return render_template('main.html', hourly_count_dict_male=hourly_count_dict_male, hourly_count_dict_female=hourly_count_dict_female, totalMale=totalMale, totalFemale=totalFemale)
 
-# @app.route('/camera_select', methods=["GET", "POST"])
-# def cameraidlookup():
-#     cameraid = request.form.get('cameraid')
-#     print(cameraid);
-#     # return render_template('video_feed.html', cameraid=cameraid)
-#     return redirect(url_for('video_feed',  cameraid=cameraid))
-    
+
 
 def gen(camera):
     global ct, trackers,trackableObjects, writer, now, MODEL_MEAN_VALUES,gender_list,totalMale, totalFemale, hourly_count_dict_male, hourly_count_dict_female,confidence, face_net, gender_net
 
     print("[INFO] starting video stream...")
+    
 
     while True:
         frame = camera.get_frame()
-        # socketio.emit('newnumber', {'display':"HI 4"} , namespace='/test')
 
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+       
 
-# @app.route('/video_feed/<int:cameraid>')
-# def video_feed(cameraid):
-#     # cameraid = request.form.get('cameraid')
-#     # print (cameraid);
-#     return Response(gen(VideoCamera(cameraid)),
-#                     mimetype='multipart/x-mixed-replace; boundary=frame')
-@app.route('/video_feed')
-def video_feed():
-    # cameraid = request.form.get('cameraid')
-    # print (cameraid);
-    return Response(gen(VideoCamera()),
+@app.route('/video_feed/<cameraid>')
+def video_feed(cameraid):
+   
+    return Response(gen(VideoCamera(cameraid)),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
+@socketio.on('connect', namespace='/test')
+def test_connect():
+    # need visibility of the global thread object
+    print('Client connected')
+
+@socketio.on('disconnect', namespace='/test')
+def test_disconnect():
+    print('Client disconnected')
 
 
 if __name__ == '__main__':
