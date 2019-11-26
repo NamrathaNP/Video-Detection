@@ -1,240 +1,370 @@
 <head>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment"> </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-<script src="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/src/js/bootstrap-datetimepicker.js"></script>
-
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"/>
-
-<link href="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/build/css/bootstrap-datetimepicker.css" rel="stylesheet"/>
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
-<script type="text/javascript">
-  $(document).ready(function(){
-//connect to the socket server.
-var socket = io.connect('http://' + document.domain + ':' + location.port + '/test');
-console.log(socket)
-
-socket.on('newframe', function(msg1){
-  console.log(msg1)
-  console.log(msg1.display)
-  
-  alert(msg1.totalMale + "," + msg1.totalFemale + "HI")
-  
-});
-socket.on('newnumber', function(msg){
-  console.log(msg)
-  console.log(msg.display)
-  
-  alert(msg.display );  
-});
-// socket.on('from_flask', function (payload) {
-//   console.log(payload)
-//   console.log(payload.data)
-//   $("#imageElement").attr("src","data:image/jpeg"+payload['data']);
-// });
-});
-</script>
-
-</head>
-
-<body>
-  <div class="container card card-body bg-light">
-      <h5 class="card-title text-center text-dark" style="font-size: 30px;">Demo Project</h5>
-  <div class="row">   
- <div class="col-6">
-      <div class="row">
-        <div class="col-md-1"></div>
-        <div class="col-md-3">
-        <p>Date</p>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <div class='input-group date' id='datetimepicker1'>
-                    <input type='text' class="form-control" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            </div>
-        </div>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment"> </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+        
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        
+        <script src="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/src/js/bootstrap-datetimepicker.js"></script>
+        
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"/>
+        
+        <link href="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/build/css/bootstrap-datetimepicker.css" rel="stylesheet"/>
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
         <script type="text/javascript">
-            $(function () {
-                $('#datetimepicker1').datetimepicker();
-            });
-            </script>
-            <div class="col-md-6"> 
-          <span > 
-            <img src="{{url_for('static',filename='test.jpg')}}" alt="Smiley face" height="200" width="200">
-            <img src= "{{ url_for('video_feed') }}"  alt="Smiley face" height="200" width="200">
-            <img src="{{url_for('static',filename='download.jpeg')}}" alt="Smiley face" height="200" width="200">
-            <img id="imageElement" src="video_feed" alt="Smiley face" height="200" width="200">
-            
-
-          </span>
-            </div>
-          <div class="row">
-            
-              <div id="log1" class="col-md-2">
+          
+        </script>
+        <style>
+        body {
+          background-color: #f0f0f0;
+          /* background-image: url("./../static/image.jpg"); */
+          
+        }
+        .company-logo {
+          width: 16%;
+        }
+        .heading {
+          font-size: 18px;
+          font-weight: bold;
+          text-transform: uppercase;
+          text-align: center;
+          margin: 1px 1px 1px 270px ;
+          text-align: center;
+        }
+        .active{
+          display:block;
+        }
+        .inactive{
+          display: none;
+        }
+        </style>
+        
+        </head>
+        
+        <body>
+            <div class="header-logo">
+        
+                  <img class="company-logo" src="./../static/affine-logo.svg" />
+        
+                <span class="heading">
+                    Vision Based Crowd Analytics
+                </span>
+              </div>
+          <div class="container card card-body" style="background-color:#e2e2e2;"">
+              <!-- <h5 class="card-title text-center text-dark" style="font-size: 30px;">Vision Based Crowd Analytics</h5> -->
+          <div class="row">   
+         <div class="col-6">
+              <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2 text-right text-dark">
+                <p style="color:#515151;font-family: verdana;font-size: 150%;">Date :</p>
                 </div>
-          <div id="log" class="col-md-8 ">
+                <div id="datenow" class="col-md-8 text-left text-dark" style="color:#515151;font-family: verdana;font-size: 150%;">
+                  </div>
+                <!-- <div class="col-md-6">
+                    <div class="form-group">
+                        <div class='input-group date' id='datetimepicker1'>
+                            <input type='text' class="form-control" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        $('#datetimepicker1').datetimepicker();
+                    });
+                    </script> -->
+                    <div id="formdata"class="col-md-12 ">
+                        <form  class="active">
+                            <label>Please give the Camera number</label>
+                            <input type="text" name="camera" id="camera"><br>
+                            <button type="button" class="btn btn-secondary"   > Enter</button>
+                          </form>
+                    </div>
+                    <div id="video"class="col-md-12 inactive"> 
+                  <span > 
+                    <img src= "{{ url_for('video_feed', cameraid = '') }}" id="newvideo" alt="Smiley face" height="500" width="500" style="border:#515151">
+                  
+                  </span>
+                    </div>
+              
+                    </div>
             </div>
-            
+            <div class="col-6">
+              <div class="row">
+                <!-- <div class="col-md-9 card card-body bg-light border-dark text-center">
+                  
+                  <canvas id="pie-chart" width="395" height="265"></canvas>
+                </div> -->
+                <div class="row col-12" ><p class="col-md-12" style="color:#515151;font-family: verdana;font-size: 130%;">Male Count = <span id="malecount"></span></p></div>
+                    <div class="row col-12" ><p class="col-md-12" style="color:#515151;font-family: verdana;font-size: 130%;">Female Count =  <span id="femalecount" ></span></p></div>
+                    <div class="row col-12" ><p class="col-md-12" style="color:#515151;font-family: verdana;font-size: 130%;"> Total Count =  <span id="totalcount" ></span></p></div>
+                    <div class="row col-12"></div>
+                <div class="col-md-11 card card-body bg-light border-dark text-center" style="color:#aaa9ad;">
+                  
+                  <canvas id="bar-chart" width="365" height="265"></canvas></div>
+                
+                
+              </div>
             </div>
-            </div>
-    </div>
-    <div class="col-6">
-      <div class="row">
-        <div class="col-md-9 card card-body bg-light border-dark text-center">
-          <h1>PIE chart</h1>
-          <canvas id="pie-chart" width="60" height="40"></canvas>
+          </div>
         </div>
-        
-        <div class="col-md-9 card card-body bg-light border-dark text-center">
-            <h1>BAR chart</h1>
-          <canvas id="bar-chart" width="60" height="40"></canvas>
-        </div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-    <script>
-
-var ctx = document.getElementById('bar-chart').getContext("2d");
-
-var male = {{ hourly_count_dict_male }}
-var female = {{ hourly_count_dict_female }}
-// console.log(male)
-// console.log(female)
-var maledata = []
-var femaledata =[]
-var lables= []
-for (var key in male){
-  // console.log( key, male[key] );
-  maledata.push(male[key])
-  lables.push(key)
-}
-for (var key in female){
-  // console.log( key, female[key] );
-  femaledata.push(female[key])
-}
-
-// console.log(maledata)
-// console.log(femaledata)
- 
-var chart = new Chart(ctx, {
-  type: 'bar',
-  data: {
-labels: lables,
-legend:["Male", "Female"],
-      
-      datasets: [{
-          legend:"Male",
-          data: maledata,
-          backgroundColor: "blue",
+        <script>
+            $(document).ready(function(){
+              var options = { year: 'numeric', month: 'long', day: 'numeric' };
+              var today  = new Date();
+              var datenow = today.toLocaleDateString("en-US", options)
+              // console.log(today.toLocaleDateString("en-US", options));
+              $('#datenow').html(datenow);
+        //connect to the socket server.
+        var socket = io.connect('http://' + document.domain + ':' + location.port + '/test');
+        // console.log(socket)
+        var maledata = [];
+        var femaledata = [];
+        var totalmale = 0;
+        var totalfemale = 0;
+        // var lables = [];
+        var total= 0;
+        socket.on('newnumber', function(msg){
+          console.log(msg)
+          console.log(msg.display)
           
-      },{
-          legend: "Female",
-          data: femaledata,
-          backgroundColor: "red",
+          alert(msg.display );  
+        });
+        socket.on('newframe', function(msg1){
+          // console.log(msg1)
+          // console.log(msg1.display)
           
-      }
-
-      ]
-  },
-  options: {
-    animation: false,
-    responsive: true,
-    barValueSpacing: 20,
-    legend: {
-            display: true
-         },
-         tooltips: {
-            enabled: false
-         },
-    scales: {
-         xAxes: [{
-      	scaleLabel: {
-          display: true,
-          labelString: 'Time'
-      },
-       ticks: { 
-           	beginAtZero: true,
-           	min: 0,
-           	max: 24,
-           	stepSize: 1
-           },
-      }],
-      yAxes: [{
-        scaleLabel: {
-          display: true,
-          labelString: 'Number of male and Female Employes'
-        },
-        ticks: { 
-            beginAtZero: true,
-            min: 0,
-            max: 12,
-            stepSize: 2
+          // alert(msg1.totalMale + "," + msg1.totalFemale + "HI" + ","+ msg1.hourly_count_dict_female + ","+ msg1.hourly_count_dict_male)
+          
+        });
+        socket.on('newmale', function(male){
+          console.log(male)
+          // console.log(male.hourly_count_dict_male)
+          for (var key in male.hourly_count_dict_male){
+            // console.log( key, male.hourly_count_dict_male[key] );
+            maledata.push(male.hourly_count_dict_male[key])
+            // lables.push(key)
+            if (maledata.length >= 24){
+                  maledata.shift()
+                }  
           }
-      }]
-    }
-  }
-});
+          // console.log(lables)
+          console.log(maledata)
+          if(!male.totalMale) {
+           //data-attribute doesn't exist
+           male.totalMale = 0;
+        }
+          totalmale = male.totalMale;
+          // console.log(chartb.data.datasets.data)
+          chartb.data.datasets[0].data=maledata
+          // chartb.data.labels=lables
+          // chartp.data.datasets.data[0]=totalmale
+          chartb.update();
+          // chartp.update();
+          total = totalmale + totalfemale;
+          $('#malecount').html(totalmale);
+          $('#totalcount').html(total);
+          // updatechart();
+          // alert(male.display );  
+        });
+        socket.on('newfemale', function(female){
+          console.log(female)
+          // console.log(female.hourly_count_dict_female)
+          for (var key in female.hourly_count_dict_female){
+            // console.log( key, male.hourly_count_dict_male[key] );
+            femaledata.push(female.hourly_count_dict_female[key]) 
+            // lables.push(key)
+            if (femaledata.length >= 24){
+                  femaledata.shift()
+                }  
+          }
+          // console.log(lables)
+          console.log(femaledata)
+          if(!female.totalFemale) {
+           //data-attribute doesn't exist
+           female.totalFemale = 0;
+        }
+          // if (female.totalFemale < 0){
+          //   totafelmale = 0;
+          // }
+          totalfemale = female.totalFemale
+          // console.log(chartb.data.datasets.data)
+          chartb.data.datasets[1].data=femaledata
+          // chartb.data.labels=lables
+          // chartp.data.datasets.data[1]=totalfemale
+          chartb.update();
+          // chartp.update();
+          total = totalmale + totalfemale;
+          $('#femalecount').html(totalfemale);
+          $('#totalcount').html(total);
+          // updatechart();
+          // alert(female.display )
+        });
+        //  $('#totalcount').html(total);
+        // $('#femalecount').html(totalfemale);
+        // $('#malecount').html(totalmale);
+            var ctx = document.getElementById('bar-chart').getContext("2d");
+            
+            // var male = {{ hourly_count_dict_male }}
+            // var female = {{ hourly_count_dict_female }}
+            // console.log(male)
+            // console.log(female)
+            // var maledata = []
+            // var femaledata =[]
+            // var lables= []
+            // for (var key in male){
+            //   // console.log( key, male[key] );
+            //   maledata.push(male[key])
+            //   lables.push(key)
+            // }
+            // for (var key in female){
+            //   // console.log( key, female[key] );
+            //   femaledata.push(female[key])
+            // }
+            // console.log(maledata)
+            // console.log(femaledata)
+           
+            var chartb = new Chart(ctx, {
+          type: 'bar',
+          data: {
+        labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"],
+              
+              datasets: [{
+                  label:"Male",
+                  data: maledata,
+                  backgroundColor: "blue",
+                  
+              },{
+                  label: "Female",
+                  data: femaledata,
+                  backgroundColor: "red",
+                  
+              }
+              ]
+          },
+          options: {
+            animation: false,
+            responsive: true,
+            barValueSpacing: 25,
+            inGraphDataShow: true,
+            legend: {
+                    display: true,
+                    position: 'bottom',
+                    text : ["Male", "Female"],
+                    
+                 },
+                 title: {
+                    display: true,
+                    text: 'Vision Based Detection'
+                },
+                 tooltips: {
+                    enabled: false
+                 },
+            scales: {
+                 xAxes: [{
+                  scaleLabel: {
+                  display: true,
+                  labelString: 'Time'
+              },
+               ticks: { 
+                       beginAtZero: true,
+                       min: 0,
+                       max: 24,
+                       stepSize: 1
+                   },
+              }],
+              yAxes: [{
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Number of male and Female Employes'
+                },
+                ticks: { 
+                    beginAtZero: true,
+                    min: 0,
+                    max: 12,
+                    stepSize: 2
+                  }
+              }]
+            }
+          }
+        });
+            
+            
+          //   var ptx = document.getElementById('pie-chart').getContext("2d");
+            
+          //   // var totalmale = {{totalMale}}
+          //   // var totalfemale = {{totalFemale}}
+          //   // console.log(totalmale)
+          //   // console.log(totalfemale)
+            
+            
+          //   var chartp = new Chart(ptx, {
+          //     type: 'doughnut',
+          //     data: {
+          //   labels: ["Male", "Female"],
+                  
+          //         datasets: [{
+                    
+          //             data: [ totalmale,totalfemale],
+          //             backgroundColor: ["#0074D9", "#FF4136"]
+          //            // backgroundColor: [ "blue","red" ]
+                      
+          //         }
+                      
+                  
+            
+          //         ]
+          //     },
+          //     options: {
+          //       animation: false,
+          //       responsive: true,
+               
+          //       legend: {
+          //               display: true
+          //            },
+          //            tooltips: {
+          //               enabled: false
+          //            },
+               
+          //       }
+              
+          //   });
+           });
+           
+            $("button").click(function(){
+              var cameraid = document.getElementById("camera").value;
+              var source =  $("#newvideo").attr("src")
+      // console.log(document.getElementById('new_video').src);
+      console.log(cameraid);
+      console.log(source);
+     
+    document.getElementById('newvideo').src = document.getElementById('newvideo').src + cameraid;
 
+      console.log($("#newvideo").attr("src"))
 
-
-var ptx = document.getElementById('pie-chart').getContext("2d");
-
-var totalmale = {{totalMale}}
-var totalfemale = {{totalFemale}}
-// console.log(totalmale)
-// console.log(totalfemale)
-
-
-var chart = new Chart(ptx, {
-  type: 'doughnut',
-  data: {
-labels: ["Male", "Female"],
-      
-      datasets: [{
-        
-          data: [ totalmale,totalfemale],
-          backgroundColor: ["#0074D9", "#FF4136"]
-         // backgroundColor: [ "blue","red" ]
+    //   $.post(
+    //     "/camera_select",
+    //           { cameraid: cameraid }
+    //        )
+   
+              $("#formdata").removeClass("active");
+              $("#formdata").addClass("inactive");
+              $("#video").removeClass("inactive");
+              $("#video").addClass("active");
+            } );
+         
+               </script>   
           
-      }
-          
-      
-
-      ]
-  },
-  options: {
-    animation: false,
-    responsive: true,
-   
-    legend: {
-            display: true
-         },
-         tooltips: {
-            enabled: false
-         },
-   
-    }
-  
-});
-
-    </script>
-  
-   
-</body>
+           
+        </body>

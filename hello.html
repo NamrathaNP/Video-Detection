@@ -1,0 +1,97 @@
+
+<head>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment"> </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.min.js"></script>
+<!-- <script src='static/Chart.min.js'></script> -->
+
+</head>
+
+<body>
+   
+    <canvas id="line-chart" width="60" height="40"></canvas>
+
+   
+    <script>
+     
+  window.onload=function(){
+var ctx = document.getElementById('line-chart').getContext("2d");
+
+
+//var array = [2,-2,3,-4,5,3,-7,2,-4,5,-3,5,3,-2,6,2,4,5,3,-2,-3,-5,-2,4,4]
+var array = {{values}}
+
+
+console.log(array)
+
+var count = array.length;
+var counter = 0;
+var LabelResult = [];
+var DataResult = [];
+
+ 
+var chart = new Chart(ctx, {
+  type: 'line',
+  data: {
+labels: LabelResult,
+      
+      datasets: [{
+          fill: false,
+          data: DataResult,
+          label: 'Sample data',
+          backgroundColor: "#FF2D00",
+          borderColor: "#000000",
+          type: 'line',
+          pointRadius: 0.5,
+          lineTension: 0,
+          borderWidth: 2
+      }
+      ]
+  },
+  options: {
+    animation: false,
+    responsive: true,
+    scales: {
+         xAxes: [{
+      	scaleLabel: {
+          display: true,
+          labelString: 'Time'
+      },
+       ticks: { 
+           	beginAtZero: true,
+           	min: 0,
+           	max: 100,
+           	stepSize: 1
+           },
+      }],
+      yAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'Noise'
+        },
+      }]
+    }
+  }
+});
+
+ setInterval(function() {
+ 	if (count >0){
+ 	DataResult.push(array[counter]);
+    LabelResult.push(counter);
+    counter++;
+    count --;
+    if (DataResult.length> 9){
+		DataResult.shift();
+		LabelResult.shift();
+	}
+
+
+chart.update();
+}
+}, 100);
+ }
+    </script>
+   
+   
+</body>
+

@@ -10,6 +10,7 @@ import numpy as np
 import argparse
 import imutils
 import time as importedtime
+import json
 # import cv2
 
 import os
@@ -19,8 +20,8 @@ import eventlet
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 # socketio = SocketIO(app)
-# eventlet.monkey_patch() 
-socketio = SocketIO(app,async_mode = 'eventlet',  logger=True, engineio_logger=True)
+eventlet.monkey_patch() 
+socketio = SocketIO(app,async_mode = 'eventlet',  logger=True, engineio_logger=True, ping_timeout=2000, ping_interval=100)
 
 ct = CentroidTracker()
 trackers = []
@@ -59,13 +60,29 @@ class VideoCamera(object):
         # Using OpenCV to capture from device 0. If you have trouble capturing
         # from a webcam, comment the line below out and use a video file
         # instead.
-        # print(type(cameraid))
-        cam= int(cameraid)
-        self.video = cv2.VideoCapture(cam)
-        # print(type(cam))
-        # print(cam)
-        #video capture from IP webcam
-        #cap = cv2.VideoCapture('rtsp://admin:admin@172.16.0.14')
+        print(cameraid)
+        if (len(cameraid)> 2 ):
+        
+            address= 'rtsp://admin:admin@';
+            
+            # self.video  = cv2.VideoCapture('rtsp://admin:admin@172.16.0.14')
+            self.video  = cv2.VideoCapture(address+cameraid)
+
+        
+        else:
+        
+            cam= int(cameraid)
+            self.video = cv2.VideoCapture(cam)
+        
+        # cam= int(cameraid)
+        # self.video = cv2.VideoCapture(cam)
+        # # print(type(cam))
+        # # print(cam)
+        # #video capture from IP webcam
+        # address= 'rtsp://admin:admin@';
+        # print(cameraid)
+        # # self.video  = cv2.VideoCapture('rtsp://admin:admin@172.16.0.14')
+        # self.video  = cv2.VideoCapture(address+cameraid)
         # If you decide to use video.mp4, you must have this file in the folder
         # as the main.py.
         # self.video = cv2.VideoCapture('video.mp4')
@@ -180,7 +197,7 @@ class VideoCamera(object):
                 if (direction < 0 and centroid[0] <=50) or (direction>0 and centroid[0] >=350):
                     now = datetime.now()
                     time = str(now.hour)
-                    print('inside direction:',gender)
+                    
                     if gender is 'Male':
                         totalMale += 1
                         to.counted = True
@@ -192,9 +209,16 @@ class VideoCamera(object):
                         # (pd.DataFrame.from_dict(data=hourly_count_dict_male, 
                         # orient='index').to_csv('./static/male.csv', header=True))
                         
+                        # print("b4 sleep")
+                        # hcdm= json.dumps(hourly_count_dict_male)
+                        # tM= json.dumps(totalMale)
+                        sendingvarmale= json.dumps({'hourly_count_dict_male': hourly_count_dict_male,'totalMale':totalMale})
+
+                        # socketio.emit('newframe', {'display':"Hi" })
+                        socketio.emit('newmale', {'resp': sendingvarmale} , namespace='/test')
                         
-                        socketio.emit('newmale', {'hourly_count_dict_male': hourly_count_dict_male, 'totalMale': totalMale} , namespace='/test')
-                        socketio.sleep(0)
+                        socketio.sleep(1)
+                        # print("after sleep")
                        
                         
 
@@ -209,9 +233,15 @@ class VideoCamera(object):
                         # (pd.DataFrame.from_dict(data=hourly_count_dict_female, 
                         # orient='index').to_csv('./static/female.csv', header=True))
                        
-                        
-                        socketio.emit('newfemale', {'hourly_count_dict_female': hourly_count_dict_female,'totalFemale':totalFemale} , namespace='/test')
-                        socketio.sleep(0)
+                        # print("b4 sleep")
+                        # hcdf= hourly_count_dict_female
+                        # tF= totalFemale
+                        sendingvar= json.dumps({'hourly_count_dict_female': hourly_count_dict_female,'totalFemale':totalFemale})
+                        # socketio.emit('newframe', {'display':"Hi" })
+
+                        socketio.emit('newfemale', {'resp':sendingvar } , namespace='/test')
+                        socketio.sleep(1)
+                        # print("after sleep")
                         
 
             # store the trackable object in our dictionary
@@ -245,7 +275,8 @@ class VideoCamera(object):
         # key = cv2.waitKey(1) & 0xFF
 
         ret, jpeg = cv2.imencode('.jpg', frame)
-
+        # jpeg_sa_text= base64.b64encode('.jpg', frame)
+        # return jpeg_sa_text
         return jpeg.tobytes()
 
 
@@ -267,11 +298,13 @@ def gen(camera):
 
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-       
+        
+
 
 @app.route('/video_feed/<cameraid>')
 def video_feed(cameraid):
-   
+    print(cameraid)
+    print(type(cameraid))
     return Response(gen(VideoCamera(cameraid)),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
@@ -287,4 +320,4 @@ def test_disconnect():
 
 if __name__ == '__main__':
     # app.run( debug=True)
-    socketio.run(app, debug=True)
+    socketio.run(app,host='0.0.0.0', debug=True)
