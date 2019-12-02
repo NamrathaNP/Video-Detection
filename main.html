@@ -1,376 +1,649 @@
 <head>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment"> </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment"> </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
-<script src="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/src/js/bootstrap-datetimepicker.js"></script>
+  <script
+    src="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/src/js/bootstrap-datetimepicker.js"></script>
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
 
-<link href="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/build/css/bootstrap-datetimepicker.css" rel="stylesheet"/>
+  <link
+    href="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/build/css/bootstrap-datetimepicker.css"
+    rel="stylesheet" />
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
-<script type="text/javascript">
-  
-</script>
-<style>
-body {
-  background-color: #f0f0f0;
-  /* background-image: url("./../static/image.jpg"); */
-  
-}
-.company-logo {
-  width: 16%;
-}
-.heading {
-  font-size: 18px;
-  font-weight: bold;
+  <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
+    integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+
+
+  </script>
+  <style>
+    body {
+      background-color: #f0f0f0;
+      /* background-image: url("./../static/image.jpg"); */
+
+    }
+
+    .company-logo {
+      width: 16%;
+    }
+
+    .heading {
+      font-size: 18px;
+      font-weight: bold;
+      text-transform: uppercase;
+      text-align: center;
+      margin: 1px 1px 1px 270px;
+      text-align: center;
+    }
+
+    .active-select {
+      display: block;
+    } 
+
+    .inactive {
+      visibility: hidden;
+    }
+    .inactive-select{
+      display: none;
+    }
+
+    .selector.active {
+      background: #7BB712;
+      display: inline-block
+    }
+
+    .selector {
+      width: 130px;
+      padding: 10px;
+      position: relative;
+    }
+
+    .selector-word {
+      font-size: 15px;
+      font-weight: 600;
+      margin-left: 22px;
+    }
+
+    .radio-dot:before,
+    .radio-dot:after {
+      content: "";
+      display: block;
+      position: absolute;
+      background: #fff;
+      border-radius: 100%;
+    }
+
+    .radio-dot:before {
+      width: 20px;
+      height: 20px;
+      border: 1px solid #ccc;
+      top: 10px;
+      left: 16px;
+    }
+
+    .radio-dot:after {
+      width: 12px;
+      height: 12px;
+      border-radius: 100%;
+      top: 14px;
+      left: 20px;
+    }
+
+    .selector.active .selector-word {
+      color: #fff;
+    }
+
+    .selector.active .radio-dot:after {
+      background: #426C2A;
+    }
+
+    .selector.active .radio-dot:before {
+      background: #fff;
+      border-color: #699D17;
+    }
+
+    .selector:hover .radio-dot:before {
+      border-color: #adadad;
+    }
+
+    .selector.active:hover .radio-dot:before {
+      border-color: #699D17;
+    }
+
+    .selector.active .radio-dot:after {
+      background: #426C2A;
+    }
+
+    .selector:hover .radio-dot:after {
+      background: #e6e6e6;
+    }
+
+    .selector.active:hover .radio-dot:after {
+      background: #426C2A;
+
+    }
+    span.aa-copyright {
+  font-size: 12px;
+  color: #6ACAF0;
   text-transform: uppercase;
-  text-align: center;
-  margin: 1px 1px 1px 270px ;
-  text-align: center;
+  font-weight: bold;
+  float: right;
+  margin-top: 18px;
+  margin-right: 150px;
 }
-.video{
-  display:none;
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+   padding-bottom: 10px;
+  background-color: #133045;
 }
-.form{
-  display: block;
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
 }
-</style>
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+  </style>
 
 </head>
 
 <body>
-    <div class="header-logo">
-        
-          <img class="company-logo" src="./../static/affine-logo.svg" />
-        
-        <span class="heading">
-            Vision Based Crowd Analytics
-        </span>
-      </div>
-  <div class="container card card-body" style="background-color:#e2e2e2;"">
-      <!-- <h5 class="card-title text-center text-dark" style="font-size: 30px;">Vision Based Crowd Analytics</h5> -->
-  <div class="row">   
- <div class="col-6">
-      <div class="row">
-        <div class="col-md-1"></div>
-        <div class="col-md-2 text-right text-dark">
-        <p style="color:#515151;font-family: verdana;font-size: 150%;">Date :</p>
-        </div>
-        <div id="datenow" class="col-md-8 text-left text-dark" style="color:#515151;font-family: verdana;font-size: 150%;">
-          </div>
-        <!-- <div class="col-md-6">
-            <div class="form-group">
-                <div class='input-group date' id='datetimepicker1'>
-                    <input type='text' class="form-control" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <script type="text/javascript">
-            $(function () {
-                $('#datetimepicker1').datetimepicker();
-            });
-            </script> -->
-            <div class="col-md-12 ">
-                <form  class="form">
-                    <label>Please give the Camera number</label>
-                    <input type="text" name="camera" id="camera"><br>
-                    <button type="button" class="btn btn-secondary"   > Enter</button>
-                  </form>
-            </div>
+  <div class="header-logo">
 
-            <div class="col-md-12 video"> 
-          <span > 
-            <img src= "{ url_for('video_feed/${cameraid}') , cameraid = x.cameraid }"  alt="Smiley face" height="500" width="500" style="border:#515151">
-          
-          </span>
-            </div>
-      
-            </div>
+    <img class="company-logo" src="./../static/affine-logo.svg" />
+
+    <span class="heading">
+      Vision Based Crowd Analytics
+    </span>
+  </div>
+  <div class="tab">
+      <button class="tablinks" onclick="tabChange(event, 'Live')" id="defaultOpen">Live</button>
+      <button class="tablinks" onclick="tabChange(event, 'History')">History</button>
     </div>
-    <div class="col-6">
+    <div id="Live" class="container card card-body" style="background-color:#e2e2e2;">
+        <!-- <h5 class=" card-title text-center text-dark" style="font-size: 30px;">Vision Based Crowd Analytics</h5> -->
+      
+      <div id="formdata"class="col-md-12 " style="top:10px">
+        <form  class="active">
+            <label>Please give the Camera number</label>
+            <input type="text" name="camera" id="camera"><br>
+    
+          </form>
+    </div>
+    
       <div class="row">
-        <!-- <div class="col-md-9 card card-body bg-light border-dark text-center">
+        <div class="col-6">
+          <div class="row">
+            <div class="col-md-1"></div>
+  
+  
+            <!-- <div id="staticvideo" class="col-md-12 inactive-select" >
+              <span>
+                <video id="testvideo" alt="No Camera Found" height="300" width="500" style="border:#515151 ;padding-left:30px;" controls
+                  >
+                  <source src="./../video_archive/01-12-2019_20-35-12.avi" type="video/mp4">
+                </video>
+              </span>
+            </div> -->
+            <div id="video" class="col-md-12 inactive-select">
+              <span>
+                <img src="{{ url_for('video_feed', cameraid = '0') }}" id="newvideo" alt="No Camera Found"
+                  height="370" width="500" style="border:#515151; margin:28px">
+  
+              </span>
+            </div>
+  
+          </div>
+        </div>
+        <div class="col-6">
+            <div class="row">
+                <div id="start" class="col-md-4 " style="padding-left: 40px; top:-34px">
+                  <button type="button" class="btn btn-primary"  style="width:fit-content">Connect</button>
+                </div>
           
-          <canvas id="pie-chart" width="395" height="265"></canvas>
-        </div> -->
-        <div class="row col-12" ><p class="col-md-12" style="color:#515151;font-family: verdana;font-size: 130%;">Male Count = <span id="malecount"></span></p></div>
-            <div class="row col-12" ><p class="col-md-12" style="color:#515151;font-family: verdana;font-size: 130%;">Female Count =  <span id="femalecount" ></span></p></div>
-            <div class="row col-12" ><p class="col-md-12" style="color:#515151;font-family: verdana;font-size: 130%;"> Total Count =  <span id="totalcount" ></span></p></div>
+                <div id="stop" class="col-md-8 disable" disabled='disabled' style="padding-left: 210px; top:-29px; width:auto">
+                  <button type="button" class="btn btn-secondary"  style="width:fit-content"> Disconnect</button>
+                </div>
+              </div>
+          <div class="row ">
+            <!-- <div class="col-md-9 card card-body bg-light border-dark text-center">
+            
+            <canvas id="pie-chart" width="395" height="265"></canvas>
+          </div> -->
+          <div class="col-md-12 inactive" id="counts">
+            <div class="row " style="padding-left: 25px;">
+            <div class="col-md-4">
+              <p  style="color:#515151;font-family: verdana;font-size: 100%;">#Males: <span
+                  id="malecount"></span></p>
+            </div>
+            <div class="col-md-4">
+              <p style="color:#515151;font-family: verdana;font-size: 100%;">#Females: <span
+                  id="femalecount"></span></p>
+            </div>
+            <div class="col-md-4">
+              <p style="color:#515151;font-family: verdana;font-size: 100%;">#Total: <span
+                  id="totalcount"></span></p>
+            </div>
+          </div>
+        </div>
             <div class="row col-12"></div>
-        <div class="col-md-11 card card-body bg-light border-dark text-center" style="color:#aaa9ad;">
-          
-          <canvas id="bar-chart" width="365" height="265"></canvas></div>
-        
-        
+            <div class="col-md-11 card card-body bg-light border-dark text-center inactive" id="chart"
+              style="color:#aaa9ad;">
+            
+              <canvas id="bar-chart" width="365" height="220"></canvas></div>
+  
+  
+          </div>
+        </div>
       </div>
     </div>
+
+
+
+    <div id="History" class="container card card-body inactive-select" style="background-color:#e2e2e2;">
+        <div class="row">
+          <div class="form-group col-md-4" disabled='disabled' id="dateandtime">
+            <div style="font-weight: bold; padding-top: 16px;"> From  : </div> 
+            <div class='input-group date' id='datetimepicker' style="margin-left: 60px; top:-26px">
+              <input type='text' class="form-control" />
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar " id="datetime"></span>
+              </span>
+            </div>
+          </div>
+        
+        <script type="text/javascript">
+          $(function () {
+            $('#datetimepicker').datetimepicker({
+              stepping: 60,
+              maxDate : new Date()
+            })
+    
+          });
+        </script>
+          
+          <div class="form-group col-md-4" disabled='disabled' id="dateandtime1" style="margin-left: 200px; top:11px;">
+            <div style="font-weight: bold; padding-top: 6px;"> To  : </div> 
+            <div class='input-group date' id='datetimepicker1' style="margin-left: 60px; top:-26px">
+              <input type='text' class="form-control" />
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar " id="datetime1"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+              
+           <div class="row">
+              <div class="col-md-4">
+                <p  style="color:#515151;font-family: verdana;font-size: 100%; padding-left:60px;">Male Count = <span
+                        id="malecount"></span></p>
+                  </div>
+                  <div class="col-md-4">
+                    <p style="color:#515151;font-family: verdana;font-size: 100%; padding-left:60px;">Female Count = <span
+                        id="femalecount"></span></p>
+                  </div>
+                  <div class="col-md-4">
+                    <p style="color:#515151;font-family: verdana;font-size: 100%; padding-left: 60px;"> Total Count = <span
+                        id="totalcount"></span></p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="row col-12"></div>
+                  <div class="col-md-11 card card-body bg-light border-dark text-center" id="chart"
+                    style="color:#aaa9ad; margin-left: 48px;">
+                    <canvas id="bar-chart" width="900" height="290"></canvas>   
+                  </div>    
+                </div>
+                </div>
+    
+
+  
+  <div class="footer">
+    <span class="aa-copyright">Copyright Affine Analytics (P) LTD.</span>
   </div>
-</div>
-<script>
-    $(document).ready(function(){
+  <script>
+    $(document).ready(function () {
+
+      
+    
+    var cameraid = document.getElementById("camera").value;
+          console.log(cameraid);
+       
+      //  console.log( $("#datetimepicker1").find("input").val());
+      // var maledata={{ hourly_count_dict_male }};
+      // var femaledata={{ hourly_count_dict_female }};
+      // var totalmale ={{ totalMale }};
+      // var totalfemale= {{ totalFemale }};
+
+  
+
+     // filename= "static1.mp4"
+      // document.getElementById("testvideo").getElementsByTagName("source")[0].src= document.getElementById("testvideo").getElementsByTagName("source")[0].src + filename;
+      
+   
+      $("#start").click(function () {
+        $('#stop').attr("disabled", false);
+        // if ($('input[id=Live]:checked').length > 0) {
+         
+          // document.getElementById('newvideo').src = document.getElementById('newvideo').src + cameraid;
+          
+          // $('#datetime').prop("disabled", true);
+
+
+
+          // $("#chart").load("/initial_data");
+          $("#video").removeClass("inactive-select");
+          $("#video").addClass("active-select");
+          $("#chart").removeClass("inactive");
+          $("#chart").addClass("active-select");
+          $("#counts").removeClass("inactive");
+          $("#counts").addClass("active-select");
+        });
+       
+         
+          var  datetimevar= $("#datetimepicker1").find("input").val();
+          var curdate= new Date(datetimevar)
+         console.log(datetimevar)
+         var seltime= curdate.getHours()
+         console.log(seltime)
+         var dd=curdate.getDate()
+         var mm= curdate.getMonth()+1
+         var yyyy= curdate.getFullYear()
+         
+    
+        var seldate = (dd)+"-"+(mm)+"-"+(yyyy)
+        console.log(seldate) 
+
+
+          $.post(
+        "/record_data",{
+          cameraid : '172.16.0.14',
+          seltime: seltime,
+          seldate: seldate,
+              }
+           )
+          // $("#chart").load("/record_data");
+          // $('#datetime').prop("disabled", false);
+          // $("#video").removeClass("active-select");
+          // $("#video").addClass("inactive-select");
+          // $("#staticvideo").removeClass("inactive-select");
+          // $("#staticvideo").addClass("active-select");
+          // $("#chart").removeClass("inactive");
+          // $("#chart").addClass("active-select");
+          // $("#counts").removeClass("inactive");
+          // $("#counts").addClass("active-select");
+       
+
+
+      $("#stop button").click(function () {
+        $('#stop').attr("disabled", true);
+        $('#start').attr("disabled", false);
+        // $("#staticvideo").removeClass("active-select");
+        // $("#staticvideo").addClass("inactive-select");
+        $("#video").removeClass("active-select");
+        $("#video").addClass("inactive-select");
+        $("#chart").removeClass("active-select");
+        $("#chart").addClass("inactive");
+        $("#counts").removeClass("active-select");
+        $("#counts").addClass("inactive");
+      
+      });
+      // document.getElementById('newvideo').src = document.getElementById('newvideo').src + cameraid;
 
 
       var options = { year: 'numeric', month: 'long', day: 'numeric' };
-      var today  = new Date();
+      var today = new Date();
       var datenow = today.toLocaleDateString("en-US", options)
       // console.log(today.toLocaleDateString("en-US", options));
       $('#datenow').html(datenow);
-//connect to the socket server.
-var socket = io.connect('http://' + document.domain + ':' + location.port + '/test');
-// console.log(socket)
-var maledata = [];
-var femaledata = [];
-var totalmale = 0;
-var totalfemale = 0;
-// var lables = [];
-var total= 0;
-socket.on('newnumber', function(msg){
-  // console.log(msg)
-  // console.log(msg.display)
-  
-  // alert(msg.display );  
-});
-socket.on('newframe', function(msg1){
-  // console.log(msg1)
-  // console.log(msg1.display)
-  
-  // alert(msg1.totalMale + "," + msg1.totalFemale + "HI" + ","+ msg1.hourly_count_dict_female + ","+ msg1.hourly_count_dict_male)
-  
-});
+      //connect to the socket server.
+      var socket = io.connect('http://' + document.domain + ':' + location.port + '/test');
+      console.log(socket)
+      maledata = [];
+      femaledata = [];
+      totalmale = 0;
+      totalfemale = 0;
+      // var lables = [];
+      var total = 0;
+      socket.on('newdata', function newdata(msg1) {
+        console.log(msg1)
+        console.log(msg1.data)
 
-socket.on('newmale', function(male){
-  console.log(male)
-  // console.log(male.hourly_count_dict_male)
-  for (var key in male.hourly_count_dict_male){
-    // console.log( key, male.hourly_count_dict_male[key] );
-    maledata.push(male.hourly_count_dict_male[key])
-    // lables.push(key)
-    if (maledata.length >= 24){
-          maledata.shift()
-        }  
-  }
-  // console.log(lables)
-  console.log(maledata)
-  if(!male.totalMale) {
-   //data-attribute doesn't exist
-   male.totalMale = 0;
-}
-  totalmale = male.totalMale;
-  // console.log(chartb.data.datasets.data)
-  chartb.data.datasets[0].data=maledata
-  // chartb.data.labels=lables
-  // chartp.data.datasets.data[0]=totalmale
-  chartb.update();
-  // chartp.update();
-  total = totalmale + totalfemale;
-  $('#malecount').html(totalmale);
-  $('#totalcount').html(total);
-  // updatechart();
-  // alert(male.display );  
-});
-socket.on('newfemale', function(female){
-  console.log(female)
-  // console.log(female.hourly_count_dict_female)
-  for (var key in female.hourly_count_dict_female){
-    // console.log( key, male.hourly_count_dict_male[key] );
-    femaledata.push(female.hourly_count_dict_female[key]) 
-    // lables.push(key)
-    if (femaledata.length >= 24){
-          femaledata.shift()
-        }  
-  }
+        // alert(msg1.display)
 
-  // console.log(lables)
-  console.log(femaledata)
-  if(!female.totalFemale) {
-   //data-attribute doesn't exist
-   female.totalFemale = 0;
-}
-  // if (female.totalFemale < 0){
-  //   totafelmale = 0;
-  // }
-  totalfemale = female.totalFemale
-  // console.log(chartb.data.datasets.data)
-  chartb.data.datasets[1].data=femaledata
-  // chartb.data.labels=lables
-  // chartp.data.datasets.data[1]=totalfemale
-  chartb.update();
-  // chartp.update();
-  total = totalmale + totalfemale;
-  $('#femalecount').html(totalfemale);
-  $('#totalcount').html(total);
-  // updatechart();
-  // alert(female.display )
-});
-//  $('#totalcount').html(total);
-// $('#femalecount').html(totalfemale);
-// $('#malecount').html(totalmale);
+      });
 
-    var ctx = document.getElementById('bar-chart').getContext("2d");
-    
-    // var male = {{ hourly_count_dict_male }}
-    // var female = {{ hourly_count_dict_female }}
-    // console.log(male)
-    // console.log(female)
-    // var maledata = []
-    // var femaledata =[]
-    // var lables= []
-    // for (var key in male){
-    //   // console.log( key, male[key] );
-    //   maledata.push(male[key])
-    //   lables.push(key)
-    // }
-    // for (var key in female){
-    //   // console.log( key, female[key] );
-    //   femaledata.push(female[key])
-    // }
-
-    // console.log(maledata)
-    // console.log(femaledata)
-   
-    var chartb = new Chart(ctx, {
-  type: 'bar',
-  data: {
-labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"],
-
+      var ctx = document.getElementById('bar-chart').getContext("2d");
       
-      datasets: [{
-          label:"Male",
-          data: maledata,
-          backgroundColor: "blue",
-          
-      },{
-          label: "Female",
-          data: femaledata,
-          backgroundColor: "red",
-          
-      }
+      var chartb = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"],
 
-      ]
-  },
-  options: {
-    animation: false,
-    responsive: true,
-    barValueSpacing: 25,
-    inGraphDataShow: true,
-    legend: {
+
+          datasets: [{
+            label: "Male",
+            data: maledata,
+            backgroundColor: "blue",
+
+          }, {
+            label: "Female",
+            data: femaledata,
+            backgroundColor: "red",
+
+          }
+
+          ]
+        },
+        options: {
+          animation: false,
+          responsive: true,
+          barValueSpacing: 25,
+          inGraphDataShow: true,
+          legend: {
             display: true,
             position: 'bottom',
-            text : ["Male", "Female"],
-            
-         },
-         title: {
+            text: ["Male", "Female"],
+
+          },
+          title: {
             display: true,
             text: 'Vision Based Detection'
-        },
-         tooltips: {
+          },
+          tooltips: {
             enabled: false
-         },
-    scales: {
-         xAxes: [{
-      	scaleLabel: {
-          display: true,
-          labelString: 'Time'
-      },
-       ticks: { 
-           	beginAtZero: true,
-           	min: 0,
-           	max: 24,
-           	stepSize: 1
-           },
-      }],
-      yAxes: [{
-        scaleLabel: {
-          display: true,
-          labelString: 'Number of male and Female Employes'
-        },
-        ticks: { 
-            beginAtZero: true,
-            min: 0,
-            max: 12,
-            stepSize: 2
+          },
+          scales: {
+            xAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Time'
+              },
+              ticks: {
+                beginAtZero: true,
+                // min: 0,
+                // max: 24,
+                // stepSize: 1
+              },
+            }],
+            yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Number of male and Female Employes'
+              },
+              ticks: {
+                beginAtZero: true,
+                // min: 0,
+                // max: 12,
+                // stepSize: 2
+              }
+            }]
           }
-      }]
-    }
-  }
-});
+        }
+      });
 
-    
-    
-  //   var ptx = document.getElementById('pie-chart').getContext("2d");
-    
-  //   // var totalmale = {{totalMale}}
-  //   // var totalfemale = {{totalFemale}}
-  //   // console.log(totalmale)
-  //   // console.log(totalfemale)
-    
-    
-  //   var chartp = new Chart(ptx, {
-  //     type: 'doughnut',
-  //     data: {
-  //   labels: ["Male", "Female"],
-          
-  //         datasets: [{
-            
-  //             data: [ totalmale,totalfemale],
-  //             backgroundColor: ["#0074D9", "#FF4136"]
-  //            // backgroundColor: [ "blue","red" ]
-              
-  //         }
-              
-          
-    
-  //         ]
-  //     },
-  //     options: {
-  //       animation: false,
-  //       responsive: true,
-       
-  //       legend: {
-  //               display: true
-  //            },
-  //            tooltips: {
-  //               enabled: false
-  //            },
-       
-  //       }
+      var newmale = function(mdata) {
+        console.log(mdata.resp) 
+        var male = JSON.parse(mdata.resp)
+        
+        // console.log(male.hourly_count_dict_male)
+        for (var key in male.hourly_count_dict_male) {
+          // console.log( key, male.hourly_count_dict_male[key] );
+          maledata.push(male.hourly_count_dict_male[key])
+          if (maledata.length > 24) {
+            maledata.shift()
+          }
+        }
+        // console.log(lables)
+        console.log(maledata)
+        if (!male.totalMale) {
+          //data-attribute doesn't exist
+          male.totalMale = 0;
+        }
+        totalmale = male.totalMale;
+        console.log(chartb.data.datasets.data)
+        chartb.data.datasets[0].data = maledata
+        chartb.update();
+        total = totalmale + totalfemale;
+        $('#malecount').html(totalmale);
+        $('#totalcount').html(total);
       
-  //   });
+      }
 
-   });
-   
-    $("button").click(function(){
-      var cameraid = document.getElementById("camera").value;
-      console.log(cameraid);
-           $.post(
-              "/camera_select",
-              { cameraid: cameraid }
-           )
+      var newfemale = function(fdata) {
+        console.log(fdata.resp)
+        var female = JSON.parse(fdata.resp)
+        
+        // console.log(female.hourly_count_dict_female)
+        for (var key in female.hourly_count_dict_female) {
+          // console.log( key, male.hourly_count_dict_male[key] );
+          femaledata.push(female.hourly_count_dict_female[key])
+          if (femaledata.length > 24) {
+            femaledata.shift()
+          }
+        }
+
+        // console.log(lables)
+        console.log(femaledata)
+        if (!female.totalFemale) {
+          //data-attribute doesn't exist
+          female.totalFemale = 0;
+        }
+
+        totalfemale = female.totalFemale
+        console.log(chartb.data.datasets.data)
+        chartb.data.datasets[1].data = femaledata
+
+        chartb.update();
+        total = totalmale + totalfemale;
+        $('#femalecount').html(totalfemale);
+        $('#totalcount').html(total);
+      }
+      
+      socket.on('newmale', newmale);
+      socket.on('newfemale', newfemale);
+
+
     
-      $("form").removeClass("form");
-      $("div").removeClass("video");
-    } );
 
-
-
- 
-
-
-       </script>   
+      var initialdata = {{sendinginidata| safe}}
+      console.log(initialdata);
   
-   
+      newmale({resp: JSON.stringify({hourly_count_dict_male:initialdata.hourly_count_dict_male,totalMale: initialdata.totalMale})});
+      newfemale({resp: JSON.stringify({hourly_count_dict_female:initialdata.hourly_count_dict_female, totalFemale:initialdata.totalFemale})});
+      
+      
+
+      
+
+      // $("#formdata button").click(function () {
+      //   var cameraid = document.getElementById("camera").value;
+      //   var source = $("#newvideo").attr("src")
+      //   // console.log(document.getElementById('new_video').src);
+      //   console.log(cameraid);
+      //   console.log(source);
+
+      //   document.getElementById('newvideo').src = document.getElementById('newvideo').src + cameraid;
+
+      //   console.log($("#newvideo").attr("src"))
+      //   $("#stop").removeClass("inactive");
+      //   $("#stop").addClass("active");
+      //   $("#formdata").removeClass("active");
+      //   $("#formdata").addClass("inactive");
+      //   $("#video").removeClass("inactive");
+      //   $("#video").addClass("active");
+      // });
+
+      // $("#stop button").click(function () {
+      //   $("#stop").removeClass("active");
+      //   $("#stop").addClass("inactive");
+      //   $("#formdata").removeClass("inactive");
+      //   $("#formdata").addClass("active");
+      //   $("#video").removeClass("active");
+      //   $("#video").addClass("inactive");
+      // });
+    });
+    function tabChange(evt, status) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active-select", "");
+      }
+      document.getElementById(status).style.display = "block";
+      evt.currentTarget.className += " active-select";
+    }
+    document.getElementById("defaultOpen").click();
+       
+
+  </script>
+
+
 </body>
