@@ -71,6 +71,9 @@ gender_net = cv2.dnn.readNetFromCaffe(
                         "gender_model/gender_net.caffemodel")
 
 cameraid = "172.16.0.14"
+
+
+
 # cameraid = '0'
 print("[INFO] starting video stream...")
 class VideoCamera(object):
@@ -459,51 +462,82 @@ def video_feed(cameraid):
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
+
+# @app.route('/recvideo_list', methods=["GET", "POST"])
+# def recvideo_list():
+#     updateto1=request.args.get('updateto1')
+#     updatefrom1=request.args.get('updatefrom1')
+
+#     path = os.getcwd()+"/video_archive"
+#     list_of_files = {}
+
+#     for filename in os.listdir(path):
+#         if (updatefrom1 in filename  or updateto1 in filename):
+#             list_of_files[filename] = "./../video_archive/"+filename
+
+#     videodatalist= json.dumps({'list_of_files':list_of_files})
+
+#     return videodatalist
+
+
+
 @app.route('/record_data', methods=["GET", "POST"])
-def recordlookup():
+def record_data():
+    # import pdb; pdb.set_trace()
     hourly_count_dict_female={}
     hourly_count_dict_male={}
-    sendingvarmale={}
-    sendingvar={}
+    
     cameraid = '172.16.0.14'
     # seltime= 11
     # seldate= '02-12-2019'
     totalFemale=0
     totalMale=0
-    # cameraid1 = request.form.get('cameraid')
-    seltime = request.form.get('seltime')
-    seldate = request.form.get('seldate')
-    # print(cameraid1, seldate1, seltime1)
+   
+    # print(list_of_files)
+    updateto=request.args.get('updateto')
+    # print(updateto)
+    # print(type(updateto))
+    
+    updatefrom=request.args.get('updatefrom')
+    # print(updatefrom)
+    # print(type(updatefrom))
+    
+    path = os.getcwd()+"/video_archive"
+    list_of_files = {}
 
     conn = mysql.connect()
     cur = conn.cursor()
-    query_string = "SELECT cameraid, detectDate, detectHour, sum(maleCount), sum(femaleCount) FROM gcount WHERE detectDate = %s  AND detectHour = %s AND cameraId = %s GROUP BY detectHour, cameraid, detectDate"
-    cur.execute(query_string, (seldate, seltime, cameraid))
-    # cur.execute("INSERT INTO gcount(cameraId,detectDate,detectHour,maleCount,femaleCount,updatedTime) VALUES (cameraid,detectdate,detecttime,1,0,nowdatetime)")
-    data = list(cur.fetchall())
-    # print(data)
+    query_string = "SELECT detectDate, detectHour, sum(maleCount), sum(femaleCount) FROM gcount WHERE updatedTime >= %s AND updatedTime <= %s AND cameraid = %s  GROUP BY detectDate,detectHour;"
+    cur.execute(query_string, (updatefrom, updateto,cameraid))
+    recdata = list(cur.fetchall())
+    print(recdata)
     cur.close() 
 
-    for i in data:
-        hourly_count_dict_male[i[0]]=int(i[1])
+    for i in recdata:
+        datetime= i[0]+"_"+i[1]
+        hourly_count_dict_male[datetime]=int(i[2])
         # print(hourly_count_dict_male);
-        hourly_count_dict_female[i[0]]=int(i[2])
+        hourly_count_dict_female[datetime]=int(i[3])
         # print(hourly_count_dict_female);
+        for filename in os.listdir(path):
+            if (datetime in filename):
+                list_of_files[filename] = "./../video_archive/"+filename
     for key in hourly_count_dict_female:
         totalFemale+=  hourly_count_dict_female[key]
     for key in hourly_count_dict_male:
         totalMale+=  hourly_count_dict_male[key]
 
-    sendingvarmale= json.dumps({'hourly_count_dict_male': hourly_count_dict_male,'totalMale':totalMale})
-                       
-                        # socketio.emit('newframe', {'display':"Hi" })
-    socketio.emit('newmale', {'resp': sendingvarmale} , namespace='/test')
-    sendingvar= json.dumps({'hourly_count_dict_female': hourly_count_dict_female,'totalFemale':totalFemale})
-                        # socketio.emit('newframe', {'display':"Hi" })
+    
+    recorddata= json.dumps({'hourly_count_dict_male': hourly_count_dict_male,'totalMale':totalMale,'hourly_count_dict_female': hourly_count_dict_female,'totalFemale':totalFemale, 'list_of_files':list_of_files})
+    # print(type(recorddata))
+    # print(recorddata)
+   
+    # socketio.emit('newrecord', {'display':recorddata } , namespace='/test')
+    # socketio.sleep(1)
+    # socketio.emit('newrecord', {'display':"HI" }, namespace='/test')
+    # return render_template('main.html',recorddata=recorddata )
 
-    socketio.emit('newfemale', {'resp':sendingvar } , namespace='/test')
-
-    return ""
+    return recorddata
 
 
 
@@ -522,5 +556,7 @@ def test_disconnect():
 if __name__ == '__main__':
     # app.run( debug=True)
     socketio.run(app,host='0.0.0.0', debug=True)
+    
 
-video_feed('172.16.0.14')
+# app.run(host='0.0.0.0',port='5001', debug=True)
+# video_feed('172.16.0.14')

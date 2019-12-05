@@ -49,12 +49,13 @@
 
     .active-select {
       display: block;
-    } 
+    }
 
     .inactive {
       visibility: hidden;
     }
-    .inactive-select{
+
+    .inactive-select {
       display: none;
     }
 
@@ -133,66 +134,136 @@
       background: #426C2A;
 
     }
+
     span.aa-copyright {
-  font-size: 12px;
-  color: #6ACAF0;
-  text-transform: uppercase;
-  font-weight: bold;
-  float: right;
-  margin-top: 18px;
-  margin-right: 150px;
-}
+      font-size: 12px;
+      color: #6ACAF0;
+      text-transform: uppercase;
+      font-weight: bold;
+      float: right;
+      margin-top: 18px;
+      margin-right: 150px;
+    }
 
-.footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-   padding-bottom: 10px;
-  background-color: #133045;
-}
-.tab {
-  overflow: hidden;
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
-}
+    .footer {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      padding-bottom: 10px;
+      background-color: #133045;
+    }
 
-/* Style the buttons inside the tab */
-.tab button {
-  background-color: inherit;
-  float: left;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding: 14px 16px;
-  transition: 0.3s;
-  font-size: 22px;
-  font-weight: bold;
-}
+    .tab {
+      overflow: hidden;
+      border: 1px solid #ccc;
+      background-color: #f1f1f1;
+    }
 
-/* Change background color of buttons on hover */
-.tab button:hover {
-  background-color: #ddd;
-}
+    /* Style the buttons inside the tab */
+    .tab button {
+      background-color: inherit;
+      float: left;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 14px 16px;
+      transition: 0.3s;
+      font-size: 22px;
+      font-weight: bold;
+    }
 
-/* Create an active/current tablink class */
-.tab button.active {
-  background-color: #ccc;
-}
+    /* Change background color of buttons on hover */
+    .tab button:hover {
+      background-color: #ddd;
+    }
 
-/* Style the tab content */
-.tabcontent {
-  display: none;
-  padding: 6px 12px;
-  border: 1px solid #ccc;
-  border-top: none;
-}
+    /* Create an active/current tablink class */
+    .tab button.active {
+      background-color: #ccc;
+    }
+
+    /* Style the tab content */
+    .tabcontent {
+      display: none;
+      padding: 6px 12px;
+      border: 1px solid #ccc;
+      border-top: none;
+    }
+
+    .loader {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      position: absolute;
+      z-index: 3;
+      border: 4px solid black;
+      top: 50%;
+      left: 50%;
+      animation: loader 2s infinite ease;
+    }
+
+    .loader-inner {
+      vertical-align: top;
+      display: inline-block;
+      width: 100%;
+      background-color: blueviolet;
+      animation: loader-inner 2s infinite ease-in;
+    }
+
+    @keyframes loader {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      25% {
+        transform: rotate(180deg);
+      }
+
+      50% {
+        transform: rotate(180deg);
+      }
+
+      75% {
+        transform: rotate(360deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes loader-inner {
+      0% {
+        height: 0%;
+      }
+
+      25% {
+        height: 0%;
+      }
+
+      50% {
+        height: 100%;
+      }
+
+      75% {
+        height: 100%;
+      }
+
+      100% {
+        height: 0%;
+      }
+    }
+  #videolist{
+    max-height: 300px;
+    overflow-y: scroll;
+    }
   </style>
 
 </head>
 
 <body>
-  <div class="header-logo">
+  <div class="header-logo" style="padding-left: 74px;">
 
     <img class="company-logo" src="./../static/affine-logo.svg" />
 
@@ -200,223 +271,300 @@
       Vision Based Crowd Analytics
     </span>
   </div>
-  <div class="tab">
-      <button class="tablinks" onclick="tabChange(event, 'Live')" id="defaultOpen">Live</button>
-      <button class="tablinks" onclick="tabChange(event, 'History')">History</button>
+  <div class="tab" style="padding-left: 83px;">
+    <button class="tablinks" onclick="tabChange(event, 'Live')" id="defaultOpen"
+      style="background-color:#e2e2e2;">Live</button>
+    <button class="tablinks" onclick="tabChange(event, 'History')" style="color: #fff">History</button>
+  </div>
+  <div id="Live" class="container card card-body tabcontent" style="background-color:#e2e2e2;">
+    <!-- <h5 class=" card-title text-center text-dark" style="font-size: 30px;">Vision Based Crowd Analytics</h5> -->
+
+    <div id="formdata" class="col-md-12 " style="top:10px">
+      <form class="active">
+        <label>Please give the Camera number</label>
+        <input type="text" name="camera" id="camera"><br>
+
+      </form>
     </div>
-    <div id="Live" class="container card card-body" style="background-color:#e2e2e2;">
-        <!-- <h5 class=" card-title text-center text-dark" style="font-size: 30px;">Vision Based Crowd Analytics</h5> -->
-      
-      <div id="formdata"class="col-md-12 " style="top:10px">
-        <form  class="active">
-            <label>Please give the Camera number</label>
-            <input type="text" name="camera" id="camera"><br>
-    
-          </form>
-    </div>
-    
-      <div class="row">
-        <div class="col-6">
-          <div class="row">
-            <div class="col-md-1"></div>
-  
-  
-            <!-- <div id="staticvideo" class="col-md-12 inactive-select" >
-              <span>
-                <video id="testvideo" alt="No Camera Found" height="300" width="500" style="border:#515151 ;padding-left:30px;" controls
-                  >
-                  <source src="./../video_archive/01-12-2019_20-35-12.avi" type="video/mp4">
-                </video>
-              </span>
-            </div> -->
-            <div id="video" class="col-md-12 inactive-select">
-              <span>
-                <img src="{{ url_for('video_feed', cameraid = '0') }}" id="newvideo" alt="No Camera Found"
-                  height="370" width="500" style="border:#515151; margin:28px">
-  
-              </span>
-            </div>
-  
+
+    <div class="row">
+      <div class="col-6">
+        <div class="row">
+          <div class="col-md-1"></div>
+
+
+         
+          <div id="video" class="col-md-12 inactive-select">
+
+            <span class="loader">
+              <span class="loader-inner"></span>
+            </span>
+            <span>
+              <img src="{{ url_for('video_feed', cameraid = '0') }}" id="newvideo" alt="No Camera Found" height="370"
+                width="500" style="border:#515151; margin:28px">
+
+            </span>
+          </div>
+
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="row">
+          <div id="start" class="col-md-4 " style="padding-left: 40px; top:-34px">
+            <button type="button" class="btn btn-primary" style="width:fit-content">Connect</button>
+          </div>
+
+          <div id="stop" class="col-md-8 disable" disabled='disabled'
+            style="padding-left: 210px; top:-29px; width:auto">
+            <button type="button" class="btn btn-secondary" style="width:fit-content"> Disconnect</button>
           </div>
         </div>
-        <div class="col-6">
-            <div class="row">
-                <div id="start" class="col-md-4 " style="padding-left: 40px; top:-34px">
-                  <button type="button" class="btn btn-primary"  style="width:fit-content">Connect</button>
-                </div>
-          
-                <div id="stop" class="col-md-8 disable" disabled='disabled' style="padding-left: 210px; top:-29px; width:auto">
-                  <button type="button" class="btn btn-secondary"  style="width:fit-content"> Disconnect</button>
-                </div>
-              </div>
-          <div class="row ">
-            <!-- <div class="col-md-9 card card-body bg-light border-dark text-center">
+        <div class="row ">
+          <!-- <div class="col-md-9 card card-body bg-light border-dark text-center">
             
             <canvas id="pie-chart" width="395" height="265"></canvas>
           </div> -->
           <div class="col-md-12 inactive" id="counts">
             <div class="row " style="padding-left: 25px;">
-            <div class="col-md-4">
-              <p  style="color:#515151;font-family: verdana;font-size: 100%;">#Males: <span
-                  id="malecount"></span></p>
-            </div>
-            <div class="col-md-4">
-              <p style="color:#515151;font-family: verdana;font-size: 100%;">#Females: <span
-                  id="femalecount"></span></p>
-            </div>
-            <div class="col-md-4">
-              <p style="color:#515151;font-family: verdana;font-size: 100%;">#Total: <span
-                  id="totalcount"></span></p>
+              <div class="col-md-4">
+                <p style="color:#515151;font-family: verdana;font-size: 100%;">#Males: <span id="malecount"></span></p>
+              </div>
+              <div class="col-md-4">
+                <p style="color:#515151;font-family: verdana;font-size: 100%;">#Females: <span id="femalecount"></span>
+                </p>
+              </div>
+              <div class="col-md-4">
+                <p style="color:#515151;font-family: verdana;font-size: 100%;">#Total: <span id="totalcount"></span></p>
+              </div>
             </div>
           </div>
-        </div>
-            <div class="row col-12"></div>
-            <div class="col-md-11 card card-body bg-light border-dark text-center inactive" id="chart"
-              style="color:#aaa9ad;">
-            
-              <canvas id="bar-chart" width="365" height="220"></canvas></div>
-  
-  
-          </div>
+          <div class="row col-12"></div>
+          <div class="col-md-11 card card-body bg-light border-dark text-center inactive" id="chart"
+            style="color:#aaa9ad;">
+
+            <canvas id="bar-chart" width="365" height="220"></canvas></div>
+
+
         </div>
       </div>
     </div>
+  </div>
 
 
 
-    <div id="History" class="container card card-body inactive-select" style="background-color:#e2e2e2;">
-        <div class="row">
-          <div class="form-group col-md-4" disabled='disabled' id="dateandtime">
-            <div style="font-weight: bold; padding-top: 16px;"> From  : </div> 
-            <div class='input-group date' id='datetimepicker' style="margin-left: 60px; top:-26px">
-              <input type='text' class="form-control" />
-              <span class="input-group-addon">
-                <span class="glyphicon glyphicon-calendar " id="datetime"></span>
-              </span>
-            </div>
-          </div>
-        
-        <script type="text/javascript">
-          $(function () {
-            $('#datetimepicker').datetimepicker({
-              stepping: 60,
-              maxDate : new Date()
-            })
-    
-          });
-        </script>
-          
-          <div class="form-group col-md-4" disabled='disabled' id="dateandtime1" style="margin-left: 200px; top:11px;">
-            <div style="font-weight: bold; padding-top: 6px;"> To  : </div> 
-            <div class='input-group date' id='datetimepicker1' style="margin-left: 60px; top:-26px">
-              <input type='text' class="form-control" />
-              <span class="input-group-addon">
-                <span class="glyphicon glyphicon-calendar " id="datetime1"></span>
-              </span>
-            </div>
-          </div>
+  <div id="History" class="container  card card-body  tabcontent inactive-select" style="background-color:#e2e2e2;">
+    <div class="row">
+      <div class="form-group col-md-3" disabled='disabled' id="dateandtime">
+        <div style="font-weight: bold; padding-top: 16px; padding-left:40px ;"> From : </div>
+        <div class='input-group date' id='datetimepicker' style="margin-left: 92px; top:-26px">
+          <input type='text' class="form-control" />
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar " id="datetime"></span>
+          </span>
         </div>
-              
-           <div class="row">
-              <div class="col-md-4">
-                <p  style="color:#515151;font-family: verdana;font-size: 100%; padding-left:60px;">Male Count = <span
-                        id="malecount"></span></p>
-                  </div>
-                  <div class="col-md-4">
-                    <p style="color:#515151;font-family: verdana;font-size: 100%; padding-left:60px;">Female Count = <span
-                        id="femalecount"></span></p>
-                  </div>
-                  <div class="col-md-4">
-                    <p style="color:#515151;font-family: verdana;font-size: 100%; padding-left: 60px;"> Total Count = <span
-                        id="totalcount"></span></p>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="row col-12"></div>
-                  <div class="col-md-11 card card-body bg-light border-dark text-center" id="chart"
-                    style="color:#aaa9ad; margin-left: 48px;">
-                    <canvas id="bar-chart" width="900" height="290"></canvas>   
-                  </div>    
-                </div>
-                </div>
-    
+      </div>
 
-  
+      <script type="text/javascript">
+        $(function () {
+          $('#datetimepicker').datetimepicker({
+            stepping: 60,
+            maxDate: new Date()
+          })
+
+        });
+      </script>
+
+      <div class="form-group col-md-3" disabled='disabled' id="dateandtime1" style="margin-left: 205px; top:11px;">
+        <div style="font-weight: bold; padding-top: 6px;"> To : </div>
+        <div class='input-group date' id='datetimepicker1' style="margin-left: 34px; top:-26px">
+          <input type='text' class="form-control" />
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar " id="datetime1"></span>
+          </span>
+        </div>
+      </div>
+      <div id="enter" class="col-md-3 " style="padding-left:175px; top:11px">
+        <button type="button" class="btn btn-primary" style="width:fit-content">Enter</button>
+      </div>
+
+    </div>
+
+    <script type="text/javascript">
+      $(function () {
+        $('#datetimepicker1').datetimepicker({
+          stepping: 60,
+          maxDate: new Date()
+        })
+
+      });
+    </script>
+
+    <div class="row">
+      <div class="col-md-4">
+        <p style="color:#515151;font-family: verdana;font-size: 100%; padding-left:60px;">Male Count = <span
+            id="malecount1"></span></p>
+      </div>
+      <div class="col-md-4">
+        <p style="color:#515151;font-family: verdana;font-size: 100%; padding-left:60px;">Female Count = <span
+            id="femalecount1"></span></p>
+      </div>
+      <div class="col-md-4">
+        <p style="color:#515151;font-family: verdana;font-size: 100%; padding-left: 60px;"> Total Count = <span
+            id="totalcount1"></span></p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="row col-12"></div>
+      <div class="col-md-11 card card-body bg-light border-dark text-center" id="chart1"
+        style="color:#aaa9ad; margin-left: 48px;">
+
+        <span class="loader" style="display: block;">
+          <span class="loader-inner"></span>
+        </span>
+
+        <canvas id="bar-chart1" width="900" height="290"></canvas>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6" id="videolist">
+
+      </div>
+       <div id="staticvideo" class="col-md-6 inactive-select" >
+              <span>
+                <video id="testvideo" alt="No Camera Found" height="300" width="500" style="border:#515151 ;padding-left:30px;" controls
+                  >
+                  <source src="" type="video/mp4">
+                </video>
+              </span>
+            </div>
+    </div>
+  </div>
+
+
+
   <div class="footer">
     <span class="aa-copyright">Copyright Affine Analytics (P) LTD.</span>
   </div>
   <script>
     $(document).ready(function () {
+      var socket = io.connect('http://' + document.domain + ':' + location.port + '/test');
+      console.log(socket)
 
-      
-    
-    var cameraid = document.getElementById("camera").value;
-          console.log(cameraid);
-       
-      //  console.log( $("#datetimepicker1").find("input").val());
-      // var maledata={{ hourly_count_dict_male }};
-      // var femaledata={{ hourly_count_dict_female }};
-      // var totalmale ={{ totalMale }};
-      // var totalfemale= {{ totalFemale }};
 
-  
+      var cameraid = document.getElementById("camera").value;
+      console.log(cameraid);
 
-     // filename= "static1.mp4"
-      // document.getElementById("testvideo").getElementsByTagName("source")[0].src= document.getElementById("testvideo").getElementsByTagName("source")[0].src + filename;
-      
-   
+
+
       $("#start").click(function () {
+
         $('#stop').attr("disabled", false);
         // if ($('input[id=Live]:checked').length > 0) {
-         
-          // document.getElementById('newvideo').src = document.getElementById('newvideo').src + cameraid;
-          
-          // $('#datetime').prop("disabled", true);
+
+        document.getElementById('newvideo').src = document.getElementById('newvideo').src + cameraid;
+
+        // $('#datetime').prop("disabled", true);
 
 
 
-          // $("#chart").load("/initial_data");
-          $("#video").removeClass("inactive-select");
-          $("#video").addClass("active-select");
-          $("#chart").removeClass("inactive");
-          $("#chart").addClass("active-select");
-          $("#counts").removeClass("inactive");
-          $("#counts").addClass("active-select");
+        // $("#chart").load("/initial_data");
+        $("#video").removeClass("inactive-select");
+        $("#video").addClass("active-select");
+        $("#chart").removeClass("inactive");
+        $("#chart").addClass("active-select");
+        $("#counts").removeClass("inactive");
+        $("#counts").addClass("active-select");
+      });
+
+      $("#enter").click(function () {
+
+        var datetimeto = $("#datetimepicker1").find("input").val();
+        var curdateto = new Date(datetimeto)
+        console.log(datetimeto)
+        var seltimeto = curdateto.getHours()
+        console.log(seltimeto)
+        var ddto = curdateto.getDate().toString().padStart(2, "0");
+        var mmto = (curdateto.getMonth() + 1).toString().padStart(2, "0");
+        var yyyyto = curdateto.getFullYear()
+
+
+        var seldateto = (ddto) + "-" + (mmto) + "-" + (yyyyto)
+        var updateto = (ddto) + "-" + (mmto) + "-" + (yyyyto) + "_" + (seltimeto) + "-59-59"
+
+        console.log(seldateto)
+
+
+        var datetimefrom = $("#datetimepicker").find("input").val();
+        var curdatefrom = new Date(datetimefrom)
+        console.log(datetimefrom)
+        var seltimefrom = curdatefrom.getHours()
+        console.log(seltimefrom)
+        var ddfrom = curdatefrom.getDate().toString().padStart(2, "0");
+        var mmfrom = (curdatefrom.getMonth() + 1).toString().padStart(2, "0");
+        var yyyyfrom = curdatefrom.getFullYear()
+
+        var seldatefrom = (ddfrom) + "-" + (mmfrom) + "-" + (yyyyfrom)
+        var updatefrom = (ddfrom) + "-" + (mmfrom) + "-" + (yyyyfrom) + "_" + (seltimefrom) + "-00-00"
+        console.log(seldatefrom)
+
+        // var datar = $.post(
+        //   "/record_data", {
+        //   cameraid: '172.16.0.14',
+        //   updateto: updateto,
+        //   updatefrom: updatefrom
+        // }
+        // )
+        // console.log(datar)
+        // console.log(datar.responseText.JSONStringify())
+
+        $.ajax({
+          type: 'get',
+          dataType: "json",
+          data: {
+            cameraid: '172.16.0.14',
+            updateto: updateto,
+            updatefrom: updatefrom
+          },
+          url: "{{ url_for('record_data') }}",
+          contentType: 'application/json;charset=UTF-8',
+          success: function (result) {
+
+            console.log(result);
+            newrecord(result);
+
+
+          },
+          error: function (result) {
+            console.log(result);
+          }
         });
-       
-         
-          var  datetimevar= $("#datetimepicker1").find("input").val();
-          var curdate= new Date(datetimevar)
-         console.log(datetimevar)
-         var seltime= curdate.getHours()
-         console.log(seltime)
-         var dd=curdate.getDate()
-         var mm= curdate.getMonth()+1
-         var yyyy= curdate.getFullYear()
-         
-    
-        var seldate = (dd)+"-"+(mm)+"-"+(yyyy)
-        console.log(seldate) 
 
 
-          $.post(
-        "/record_data",{
-          cameraid : '172.16.0.14',
-          seltime: seltime,
-          seldate: seldate,
-              }
-           )
-          // $("#chart").load("/record_data");
-          // $('#datetime').prop("disabled", false);
-          // $("#video").removeClass("active-select");
-          // $("#video").addClass("inactive-select");
-          // $("#staticvideo").removeClass("inactive-select");
-          // $("#staticvideo").addClass("active-select");
-          // $("#chart").removeClass("inactive");
-          // $("#chart").addClass("active-select");
-          // $("#counts").removeClass("inactive");
-          // $("#counts").addClass("active-select");
-       
+
+        // socket.on('newrecord', newrecord);
+        //   var recorddata = {{ recorddata  }}
+
+        //   console.log(recorddata);
+
+
+
+
+        // $("#chart1").load("/record_data");
+        //  console.log(chart1data)
+      });
+
+
+      // $("#chart").load("/record_data");
+      // $('#datetime').prop("disabled", false);
+      // $("#video").removeClass("active-select");
+      // $("#video").addClass("inactive-select");
+      // $("#staticvideo").removeClass("inactive-select");
+      // $("#staticvideo").addClass("active-select");
+      // $("#chart").removeClass("inactive");
+      // $("#chart").addClass("active-select");
+      // $("#counts").removeClass("inactive");
+      // $("#counts").addClass("active-select");
+
 
 
       $("#stop button").click(function () {
@@ -430,7 +578,7 @@
         $("#chart").addClass("inactive");
         $("#counts").removeClass("active-select");
         $("#counts").addClass("inactive");
-      
+
       });
       // document.getElementById('newvideo').src = document.getElementById('newvideo').src + cameraid;
 
@@ -441,24 +589,18 @@
       // console.log(today.toLocaleDateString("en-US", options));
       $('#datenow').html(datenow);
       //connect to the socket server.
-      var socket = io.connect('http://' + document.domain + ':' + location.port + '/test');
-      console.log(socket)
+
       maledata = [];
       femaledata = [];
       totalmale = 0;
       totalfemale = 0;
-      // var lables = [];
+      maledata1 = [];
+      femaledata1 = [];
+      var labelString = [];
       var total = 0;
-      socket.on('newdata', function newdata(msg1) {
-        console.log(msg1)
-        console.log(msg1.data)
-
-        // alert(msg1.display)
-
-      });
 
       var ctx = document.getElementById('bar-chart').getContext("2d");
-      
+
       var chartb = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -525,11 +667,148 @@
           }
         }
       });
+      var ctx = document.getElementById('bar-chart1').getContext("2d");
 
-      var newmale = function(mdata) {
-        console.log(mdata.resp) 
+      var chartr = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labelString,
+
+          datasets: [{
+            label: "Male",
+            data: maledata1,
+            backgroundColor: "blue",
+
+          }, {
+            label: "Female",
+            data: femaledata1,
+            backgroundColor: "red",
+
+          }
+
+          ]
+        },
+        options: {
+          animation: false,
+          responsive: true,
+          barValueSpacing: 25,
+          inGraphDataShow: true,
+          legend: {
+            display: true,
+            position: 'bottom',
+            text: ["Male", "Female"],
+
+          },
+          title: {
+            display: true,
+            text: 'Vision Based Detection'
+          },
+          tooltips: {
+            enabled: false
+          },
+          scales: {
+            xAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Time'
+              },
+              // ticks: {
+              //   beginAtZero: true,
+              //   // min: 0,
+              //   // max: 24,
+              //   // stepSize: 1
+              // },
+            }],
+            yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Number of male and Female Employes'
+              },
+              ticks: {
+                beginAtZero: true,
+                // min: 0,
+                // max: 12,
+                // stepSize: 2
+              }
+            }]
+          }
+        }
+      });
+
+      // socket.on('newrecord', function (msg) {
+      //   console.log(msg)
+      //   console.log(msg.display)
+
+      //   // alert(msg.display );  
+      // });
+      var newHTML = []
+      var newrecord = function (msg1) {
+        console.log(msg1)
+        // console.log(msg.display)
+        // var msg1 = JSON.parse(msg.display)
+        console.log(msg1.list_of_files)
+        for (var key in msg1.list_of_files) {
+            newHTML.push('<p><ul><a href='+ msg1.list_of_files[key]+'>'+key+'</a></ul></p>');
+      }     
+        $("#videolist").html(newHTML.join(""));
+        // for (var i in newHTML){
+        //   $('#videolist i').click(function(){
+        //   document.getElementById('testvideo source').src = document.getElementById('testvideo source').src + i;
+
+        // }
+  
+
+        for (var key in msg1.hourly_count_dict_male) {
+          // console.log( key, male.hourly_count_dict_male[key] );
+          maledata1.push(msg1.hourly_count_dict_male[key])
+          labelString.push([key])
+          if (maledata1.length > 24) {
+            maledata1.shift()
+          }
+        }
+        // console.log(lables)
+        console.log(maledata1)
+        if (!msg1.totalMale) {
+          //data-attribute doesn't exist
+          msg1.totalMale = 0;
+        }
+        totalmale = msg1.totalMale;
+        console.log(chartr.data.datasets.data)
+        chartr.data.datasets[0].data = maledata
+        chartr.update();
+        total = totalmale + totalfemale;
+        $('#malecount1').html(totalmale);
+        $('#totalcount1').html(total);
+
+        for (var key in msg1.hourly_count_dict_female) {
+          // console.log( key, male.hourly_count_dict_male[key] );
+          femaledata1.push(msg1.hourly_count_dict_female[key])
+          if (femaledata1.length > 24) {
+            femaledata1.shift()
+          }
+        }
+
+        // console.log(lables)
+        console.log(femaledata1)
+        if (!msg1.totalFemale) {
+          //data-attribute doesn't exist
+          msg1.totalFemale = 0;
+        }
+
+        totalfemale = msg1.totalFemale
+        console.log(chartr.data.datasets.data)
+        chartr.data.datasets[1].data = femaledata1
+
+        chartr.update();
+        total = totalmale + totalfemale;
+        $('#femalecount1').html(totalfemale);
+        $('#totalcount1').html(total);
+
+      }
+      var newmale = function (mdata) {
+        console.log(mdata.resp)
         var male = JSON.parse(mdata.resp)
-        
+
         // console.log(male.hourly_count_dict_male)
         for (var key in male.hourly_count_dict_male) {
           // console.log( key, male.hourly_count_dict_male[key] );
@@ -551,13 +830,13 @@
         total = totalmale + totalfemale;
         $('#malecount').html(totalmale);
         $('#totalcount').html(total);
-      
+
       }
 
-      var newfemale = function(fdata) {
+      var newfemale = function (fdata) {
         console.log(fdata.resp)
         var female = JSON.parse(fdata.resp)
-        
+
         // console.log(female.hourly_count_dict_female)
         for (var key in female.hourly_count_dict_female) {
           // console.log( key, male.hourly_count_dict_male[key] );
@@ -583,22 +862,23 @@
         $('#femalecount').html(totalfemale);
         $('#totalcount').html(total);
       }
-      
+
       socket.on('newmale', newmale);
       socket.on('newfemale', newfemale);
+      //socket.on('newrecord', newrecord);
 
 
-    
 
-      var initialdata = {{sendinginidata| safe}}
+      var initialdata = {{ sendinginidata| safe
+    }}
       console.log(initialdata);
-  
-      newmale({resp: JSON.stringify({hourly_count_dict_male:initialdata.hourly_count_dict_male,totalMale: initialdata.totalMale})});
-      newfemale({resp: JSON.stringify({hourly_count_dict_female:initialdata.hourly_count_dict_female, totalFemale:initialdata.totalFemale})});
-      
-      
 
-      
+    newmale({ resp: JSON.stringify({ hourly_count_dict_male: initialdata.hourly_count_dict_male, totalMale: initialdata.totalMale }) });
+    newfemale({ resp: JSON.stringify({ hourly_count_dict_female: initialdata.hourly_count_dict_female, totalFemale: initialdata.totalFemale }) });
+
+
+
+
 
       // $("#formdata button").click(function () {
       //   var cameraid = document.getElementById("camera").value;
@@ -635,13 +915,19 @@
       }
       tablinks = document.getElementsByClassName("tablinks");
       for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active-select", "");
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
       }
       document.getElementById(status).style.display = "block";
-      evt.currentTarget.className += " active-select";
+      evt.currentTarget.className += " active";
     }
     document.getElementById("defaultOpen").click();
-       
+
+
+    $(window).load(function () {
+      $(".loader").delay(500).fadeOut("slow");
+
+    })
+
 
   </script>
 
